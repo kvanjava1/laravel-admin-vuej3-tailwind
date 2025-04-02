@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.ts";
+@source "../**/*.vue";
+
+
+@theme {
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    --font-size-base: 17px; /* 17px, Apple's common base size */
+    --text-color-base: #1d1d1f; /* Apple's dark gray */
+}
+
+@layer base {
+    html {
+        font-family: var(--font-sans);
+        font-size: var(--font-size-base);
+        line-height: var(--line-height-base);
+        color: var(--text-color-base);
+    }
+}

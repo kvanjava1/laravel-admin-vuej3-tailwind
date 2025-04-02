@@ -1,0 +1,139 @@
+import { route } from 'ziggy-js';
+import { useAuthStore } from '@/cms/stores/useAuthStore';
+import type { MessageTypes } from '@/cms/types/message.d';
+import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
+import { ref } from 'vue';
+import type { AxiosResponse } from 'axios';
+
+export const useRole = () => {
+    const { authStoreData } = useAuthStore();
+    const loading = ref<{
+        saveNewRole: boolean,
+        updateNewRole: boolean,
+        deleteRole: boolean
+    }>({
+        saveNewRole: false,
+        updateNewRole: false,
+        deleteRole: false
+    })
+
+    const getAllPermission = async (): Promise<MessageTypes> => {
+        try {
+            const response: AxiosResponse<MessageTypes> = await axios.get(
+                route('role-management.permission'),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            );
+
+            return response.data;
+        } catch (error: any) {
+            return error.response?.data as MessageTypes;
+        }
+    };
+
+    const getAllRole = async (query: ParamRoleSearchType): Promise<MessageTypes> => {
+        try {
+            const response: AxiosResponse<MessageTypes> = await axios.get(
+                route('role-management.role', { ...query  }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+
+            return response.data
+        } catch (error: any) {
+            return error.response.data as MessageTypes
+        }
+    }
+
+    const saveNewRole = async (newRole: ParamCreateRoleType): Promise<MessageTypes> => {
+        try {
+            loading.value.saveNewRole = true
+            const response: AxiosResponse<MessageTypes> = await axios.post(
+                route('role-management.role.add'),
+                newRole,
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${authStoreData?.token}` 
+                    } 
+                }
+            )
+
+            return response.data
+        } catch (error: any) {
+            return error.response.data as MessageTypes
+        } finally {
+            loading.value.saveNewRole = false
+        }
+    }
+
+    const getRoleDetail = async (id: number): Promise<MessageTypes>  => {
+        try {
+            const response: AxiosResponse<MessageTypes> = await axios.get(
+                route('role-management.role.detail', { id: id }),
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${authStoreData?.token}` 
+                    } 
+                }
+            )
+            return response.data        
+        } catch (error: any) {
+            return error.response.data as MessageTypes
+        }
+    }
+
+    const updateRole = async (roleIdIsBeingEdited: number, editRole: ParamCreateRoleType): Promise<MessageTypes> => {
+        try {
+            loading.value.updateNewRole = true
+            const response: AxiosResponse<MessageTypes> = await axios.put(
+                route('role-management.role.update', { id: roleIdIsBeingEdited }),
+                editRole,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}` 
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            return error.response.data as MessageTypes
+        } finally {
+            loading.value.updateNewRole = false
+        }
+    }
+
+    const deleteRole = async (roleIdIsBeingDeleted: number): Promise<MessageTypes> => {
+        try {
+            loading.value.deleteRole = true
+            const response: AxiosResponse<MessageTypes> = await axios.delete(
+                route('role-management.role.delete', { id: roleIdIsBeingDeleted }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}` 
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            return error.response.data as MessageTypes
+        } finally {
+            loading.value.deleteRole = false
+        }
+    }
+
+    return { 
+        deleteRole, 
+        getRoleDetail, 
+        getAllPermission, 
+        saveNewRole, 
+        getAllRole, 
+        updateRole, 
+        loading 
+    }
+}
