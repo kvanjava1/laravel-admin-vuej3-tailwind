@@ -19,8 +19,8 @@
 // Define props interface
 interface Props {
     name: string
-    radioValue: string
-    modelValue?: string
+    radioValue: string | number 
+    modelValue?: string | number
     customClass?: string,
     label: string
 }

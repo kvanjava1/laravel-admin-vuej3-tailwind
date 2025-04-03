@@ -11,7 +11,7 @@
 
 @theme {
     --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
-    --font-size-base: 17px; /* 17px, Apple's common base size */
+    --font-size-base: 15px; /* 17px, Apple's common base size */
     --text-color-base: #1d1d1f; /* Apple's dark gray */
 }
 

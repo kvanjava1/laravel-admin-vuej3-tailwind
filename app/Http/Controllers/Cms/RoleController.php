@@ -72,7 +72,7 @@ class RoleController extends Controller
     public function role(Request $req): JsonResponse
     {
         try {
-            $roles = Role::select(['id', 'name', 'guard', 'created_at', 'updated_at'])
+            $roles = Role::select(['id', 'name', 'guard_name', 'created_at', 'updated_at'])
                 ->where('guard_name', 'api')
                 ->orderBy('id', 'desc');
 
@@ -159,7 +159,7 @@ class RoleController extends Controller
                 ->setRequest($req)
                 ->debug('addRole attempt started');
 
-            $req->validate([
+            $validated = $req->validate([
                 'roleName' => [
                     'required',
                     'string',
@@ -177,19 +177,16 @@ class RoleController extends Controller
             ]);
 
             $role = Role::create([
-                'name' => $req->get('roleName'),
+                'name' => $validated['roleName'],
                 'guard_name' => 'api',
             ]);
 
-            if (!empty($req->get('selectedPermission'))) {
-                $role->syncPermissions($req->get('selectedPermission'));
+            if (!empty($validated['selectedPermission'])) {
+                $role->syncPermissions($validated['selectedPermission']);
             }
 
             $this->logService
                 ->setRequest($req)
-                ->withContext([
-                    'user_id' => $req->user()->id
-                ])
                 ->info('addRole is successfully');
 
             $response = $this->message->setCode('success')
@@ -278,7 +275,7 @@ class RoleController extends Controller
             }
 
             $role->save();
-            
+
             $afterUpdate = $role->toArray();
 
             $this->logService

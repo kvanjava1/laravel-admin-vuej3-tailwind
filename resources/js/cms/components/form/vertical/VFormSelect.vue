@@ -9,7 +9,7 @@
             customClass
         ]"
     >
-        <option>{{ defaultOptionsLabel }}</option>
+        <option value="">{{ defaultOptionsLabel }}</option>
         <slot />
     </select>
 </template>
@@ -18,7 +18,7 @@
 // Define props interface
 interface Props {
     name: string
-    modelValue?: string
+    modelValue?: string | number,
     customClass?: string,
     defaultOptionsLabel: string
 }

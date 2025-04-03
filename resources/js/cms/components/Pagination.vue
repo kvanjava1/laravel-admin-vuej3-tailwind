@@ -2,6 +2,10 @@
 <template>
     <div class="flex flex-col items-center mt-6 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-2">
         <div class="flex flex-wrap justify-center gap-2">
+            <button @click="prevPage" :disabled="meta.current_page === 1"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50">
+                Prev
+            </button>
             <!-- First page -->
             <button v-if="totalPages > 1" @click="fetchPage(1)" :class="[
                 'w-10 h-10 flex items-center justify-center text-sm rounded',
@@ -32,15 +36,11 @@
             ]">
                 {{ totalPages }}
             </button>
+            <button @click="nextPage" :disabled="meta.current_page === totalPages"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50">
+                Next
+            </button>
         </div>
-        <button @click="prevPage" :disabled="meta.current_page === 1"
-            class="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50">
-            Previous
-        </button>
-        <button @click="nextPage" :disabled="meta.current_page === totalPages"
-            class="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50">
-            Next
-        </button>
     </div>
 </template>
 

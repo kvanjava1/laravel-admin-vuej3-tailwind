@@ -9,11 +9,11 @@
             <label>Add</label>
           </Button>
         </router-link>
-        <Button @click="showSearchModal = true">
+        <Button color="cyan" @click="showSearchModal = true">
           <MagnifyingGlassIcon class="w-5 h-5" />
           <label>Search</label>
         </Button>
-        <Button color="red" v-if="isSearching" @click="clearSearchAvailableRoles">
+        <Button color="gray" v-if="isSearching" @click="clearSearchAvailableRoles">
           <XMarkIcon class="w-5 h-5" />
           <label>Clear Search</label>
         </Button>
@@ -57,28 +57,31 @@
       </div>
       <Pagination :meta="availableRoles ?? { per_page: 0, current_page: 1 }" :method="getAvailableRoles" />
     </ContentBox>
-    
+
     <!-- search modal -->
     <Modal v-show="showSearchModal">
-      <ContentBox title="Search Form">
-        <div>
-          <label for="search" class="block text-gray-700">Search Roles</label>
-          <input type="text" id="search" v-model="paramSearchRole.name"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter role name..." />
-        </div>
-        <VerticalMenu>
-          <Button color="red" @click.prevent="showSearchModal = false">
-            <XMarkIcon class="w-5 h-5" />
-            <label>Cancel</label>
-          </Button>
-          <Button @click.prevent="searchAvailableRoles">
-            <MagnifyingGlassIcon class="w-5 h-5" />
-            <label>Search</label>
-          </Button>
-        </VerticalMenu>
+      <ContentBox title="Search Roles">
+        <VForm>
+          <VFormItem @submit="searchAvailableRoles">
+            <VFormLabel label="Roles Name" />
+            <VFormInput v-model="paramSearchRole.name" type="text" name="role_name" placeholder="Enter role name"/>
+          </VFormItem>
+          <VFormItem>
+            <VerticalMenu>
+              <Button color="gray" @click.prevent="showSearchModal = false">
+                <XMarkIcon class="w-5 h-5" />
+                <label>Cancel</label>
+              </Button>
+              <Button @click.prevent="searchAvailableRoles">
+                <MagnifyingGlassIcon class="w-5 h-5" />
+                <label>Search</label>
+              </Button>
+            </VerticalMenu>
+          </VFormItem>
+        </VForm>
       </ContentBox>
     </Modal>
+    
   </Dashboard>
 </template>
 
@@ -102,6 +105,10 @@ import { useRole } from '@/cms/composables/useRole'
 import type { AvailableRolesType, ParamRoleSearchType } from '@/cms/types/role'
 import type { MessageTypes } from '@/cms/types/message'
 import Button from '@/cms/components/Button.vue'
+import VForm from '@/cms/components/form/vertical/VForm.vue'
+import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
+import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
+import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
 
 const { getAllRole, deleteRole } = useRole()
 const availableRoles = ref<AvailableRolesType>()
