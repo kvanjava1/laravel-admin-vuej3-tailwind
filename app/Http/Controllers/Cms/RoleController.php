@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\ValidationException;
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Role;
+use App\Models\Cms\Mysql\Role;
 use App\Http\Libraries\Message;
 use App\Http\Services\Cms\LogService;
 use \Exception;
@@ -190,7 +191,7 @@ class RoleController extends Controller
                 ->info('addRole is successfully');
 
             $response = $this->message->setCode('success')
-                ->setMessageHead('Success add role')
+                ->setMessageHead('Success add role ' . $validated['roleName'])
                 ->toArray();
 
             return response()->json($response, 200);
@@ -361,7 +362,7 @@ class RoleController extends Controller
 
             $response = $this->message
                 ->setCode('success')
-                ->setMessageHead('Success')
+                ->setMessageHead('Success delete role ' . $roleWillBeDeleted['name'])
                 ->toArray();
 
             return response()->json($response, 200);

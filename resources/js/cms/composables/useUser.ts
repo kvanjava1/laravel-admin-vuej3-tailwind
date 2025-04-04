@@ -8,6 +8,7 @@ import type { AxiosResponse } from 'axios';
 import { useAuthStore } from '@/cms/stores/useAuthStore';
 
 export const useUser = () => {
+    const { authStoreData } = useAuthStore()
     const loading = ref<{
         getUser: boolean,
         getUserDetail: boolean,
@@ -19,21 +20,23 @@ export const useUser = () => {
         addUser: false,
         deleteUser: false
     })
+
     const getUser = () => {}
+
     const getUserDetail = () => {}
+
     const addUser = async (paramsUser: ParamsUserType): Promise<MessageTypes> => {
         try {
             loading.value.addUser = true
             const response: AxiosResponse<MessageTypes> = await axios.post(
-                route('role-management.role.add'),
+                route('usermanagement.user.add'),
                 paramsUser,
                 { 
                     headers: { 
-                        Authorization: `Bearer ${useAuthStore}` 
+                        Authorization: `Bearer ${authStoreData?.token}` 
                     } 
                 }
             )
-
             return response.data
         } catch (error: any) {
             loading.value.addUser = false
@@ -42,13 +45,17 @@ export const useUser = () => {
             loading.value.addUser = false
         }
     }
+
     const updateUser = () => {}
+
     const deleteUser = () => {}
+
     return {
         getUser,
         getUserDetail,
         addUser,
         deleteUser,
-        updateUser
+        updateUser,
+        loading
     }
 }

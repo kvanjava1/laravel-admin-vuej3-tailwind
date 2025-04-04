@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Libraries\Message;
 use App\Http\Services\Cms\LogService;
-use App\Models\Mysql\User;
+use App\Models\Cms\Mysql\User;
 
 class AuthController extends Controller
 {  

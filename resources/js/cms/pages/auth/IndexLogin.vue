@@ -5,21 +5,23 @@
       <AlertBox :message="message" />
       <VForm @submit="clickToLogin">
         <VFormItem>
-          <VFormLabel label="Email"/>
-          <VFormInput v-model="inputLogin.email" type="text" placeholder="Who are you?" name="email" required/>
+          <VFormLabel label="Email" />
+          <VFormInput v-model="inputLogin.email" type="text" placeholder="Who are you?" name="email" required />
         </VFormItem>
         <VFormItem>
-          <VFormLabel label="Password"/>
-          <VFormInput v-model="inputLogin.password"  type="password" placeholder="Your password" name="username" :required="true"/>
+          <VFormLabel label="Password" />
+          <VFormInput v-model="inputLogin.password" type="password" placeholder="Your password" name="username"
+            :required="true" />
         </VFormItem>
-        <VFormItem>
-          <router-link :to="{ name: 'auth.reset-password' }" class="text-sm text-indigo-600 hover:text-indigo-800">
-            Forgot your password?
+        <VFormItem class="text-center">
+          <router-link :to="{ name: 'auth.reset-password' }">
+            <label class="text-green-600 capitalize">forgot password your ?</label>
           </router-link>
         </VFormItem>
         <VFormItem>
           <VerticalMenu>
-            <Button :disabled="loading.login">
+            <Button :disabled="loading.login" class="w-full">
+              <ArrowRightOnRectangleIcon class="w-5 h-5" />
               Login
             </Button>
           </VerticalMenu>
@@ -30,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref} from 'vue'
+import { ref } from 'vue'
 
 import type { LoginTypes } from '@/cms/types/auth.d';
 import type { MessageTypes } from '@/cms/types/message';
@@ -45,21 +47,22 @@ import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue';
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue';
 import VerticalMenu from '@/cms/components/VerticalMenu.vue';
 import Button from '@/cms/components/Button.vue';
+import { ArrowRightOnRectangleIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
 
 const inputLogin = ref<LoginTypes>({} as LoginTypes)
 const { login, loading } = useAuth();
-const message  = ref<MessageTypes>({} as MessageTypes)
+const message = ref<MessageTypes>({} as MessageTypes)
 const router = useRouter();
 
-const clickToLogin = async () : Promise<void> => {
-  const loginProc = await login(inputLogin.value)
-  message.value = loginProc
+const clickToLogin = async (): Promise<void> => {
+  const responseLogin = await login(inputLogin.value)
+  message.value = responseLogin
 
   if (message.value.code === 'success') {
-      setTimeout(() => {
-          router.push({ name: 'dashboard.index' })
-      }, 500)
-      
+    setTimeout(() => {
+      router.push({ name: 'dashboard.index' })
+    }, 500)
+
   }
 }
 </script>

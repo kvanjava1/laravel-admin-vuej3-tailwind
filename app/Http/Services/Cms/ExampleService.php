@@ -11,10 +11,12 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 use App\Http\Libraries\Message;
 
-use App\Models\Mysql\User;
+use App\Models\Cms\Mysql\User;
 
 class ExampleService
 {
+    protected Message $message;
+
     function __construct(Message $message, MessageBag $messageBag)
     {
         $this->message = $message;
@@ -29,6 +31,6 @@ class ExampleService
 
     public function checkProcess(): Message 
     {
-        
+        return $this->message;
     }
 }

@@ -1,8 +1,10 @@
 import { route } from 'ziggy-js';
+import { ref } from 'vue';
+
 import { useAuthStore } from '@/cms/stores/useAuthStore';
+
 import type { MessageTypes } from '@/cms/types/message.d';
 import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
-import { ref } from 'vue';
 import type { AxiosResponse } from 'axios';
 
 export const useRole = () => {
@@ -20,31 +22,29 @@ export const useRole = () => {
     const getAllPermission = async (): Promise<MessageTypes> => {
         try {
             const response: AxiosResponse<MessageTypes> = await axios.get(
-                route('role-management.permission'),
+                route('usermanagement.permission'),
                 {
                     headers: {
                         Authorization: `Bearer ${authStoreData?.token}`
                     }
                 }
             );
-
             return response.data;
         } catch (error: any) {
             return error.response?.data as MessageTypes;
         }
-    };
+    }
 
     const getAllRole = async (query: ParamRoleSearchType): Promise<MessageTypes> => {
         try {
             const response: AxiosResponse<MessageTypes> = await axios.get(
-                route('role-management.role', { ...query  }),
+                route('usermanagement.role', { ...query  }),
                 {
                     headers: {
                         Authorization: `Bearer ${authStoreData?.token}`
                     }
                 }
             )
-
             return response.data
         } catch (error: any) {
             return error.response.data as MessageTypes
@@ -55,7 +55,7 @@ export const useRole = () => {
         try {
             loading.value.saveNewRole = true
             const response: AxiosResponse<MessageTypes> = await axios.post(
-                route('role-management.role.add'),
+                route('usermanagement.role.add'),
                 newRole,
                 { 
                     headers: { 
@@ -63,7 +63,6 @@ export const useRole = () => {
                     } 
                 }
             )
-
             return response.data
         } catch (error: any) {
             return error.response.data as MessageTypes
@@ -75,7 +74,7 @@ export const useRole = () => {
     const getRoleDetail = async (id: number): Promise<MessageTypes>  => {
         try {
             const response: AxiosResponse<MessageTypes> = await axios.get(
-                route('role-management.role.detail', { id: id }),
+                route('usermanagement.role.detail', { id: id }),
                 { 
                     headers: { 
                         Authorization: `Bearer ${authStoreData?.token}` 
@@ -92,7 +91,7 @@ export const useRole = () => {
         try {
             loading.value.updateNewRole = true
             const response: AxiosResponse<MessageTypes> = await axios.put(
-                route('role-management.role.update', { id: roleIdIsBeingEdited }),
+                route('usermanagement.role.update', { id: roleIdIsBeingEdited }),
                 editRole,
                 {
                     headers: {
@@ -112,7 +111,7 @@ export const useRole = () => {
         try {
             loading.value.deleteRole = true
             const response: AxiosResponse<MessageTypes> = await axios.delete(
-                route('role-management.role.delete', { id: roleIdIsBeingDeleted }),
+                route('usermanagement.role.delete', { id: roleIdIsBeingDeleted }),
                 {
                     headers: {
                         Authorization: `Bearer ${authStoreData?.token}` 
@@ -126,7 +125,7 @@ export const useRole = () => {
             loading.value.deleteRole = false
         }
     }
-
+    
     return { 
         deleteRole, 
         getRoleDetail, 

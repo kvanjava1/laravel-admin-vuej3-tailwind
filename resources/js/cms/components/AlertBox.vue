@@ -1,6 +1,6 @@
 <template>
     <div v-if="message.code" :class="[getAlertClasses(message.code), 'px-4 py-3 rounded relative mb-4']" role="alert">
-        <h1 class="font-bold">{{ message.message.head }}</h1>
+        <h1 class="font-bold capitalize">{{ message.message.head }}</h1>
         <ul v-if="message.code == 'error_validation' && Object.keys(message.message.detail).length" class="pt-5">
             <li v-for="detail in message.message.detail" :key="detail">
                 <ul>
