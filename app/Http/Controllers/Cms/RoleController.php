@@ -70,29 +70,32 @@ class RoleController extends Controller
         }
     }
 
-    public function role(Request $req): JsonResponse
+    public function getRole(Request $req): JsonResponse
     {
         try {
             $roles = Role::select(['id', 'name', 'guard_name', 'created_at', 'updated_at'])
                 ->where('guard_name', 'api')
                 ->orderBy('id', 'desc');
 
-            if ($req->get('name')) {
+            if ($req->get('name')) 
+            {
                 $roles = $roles->where('name', 'like', '%' . $req->get('name') . '%');
             }
 
-            if ($req->get('paginate') == true) {
+            if ($req->get('paginate') == true) 
+            {
                 $roles = $roles
-                    ->paginate($req->get('per_page') ?? 1)
-                    ->toArray();
-            } else {
-                $roles = $roles->get()->toArray();
+                    ->paginate($req->get('per_page') ?? 1);
+            } 
+            else 
+            {
+                $roles = $roles->get();
             }
 
             $response = $this->message
                 ->setCode('success')
                 ->setMessageHead('Success')
-                ->setData($roles)
+                ->setData($roles->toArray())
                 ->toArray();
 
             return response()->json($response, 200);
@@ -113,7 +116,7 @@ class RoleController extends Controller
         }
     }
 
-    public function permission(Request $req): JsonResponse
+    public function getPermission(Request $req): JsonResponse
     {
         try {
             $permission = Permission::where('guard_name', 'api')

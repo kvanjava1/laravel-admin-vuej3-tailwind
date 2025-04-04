@@ -97,6 +97,11 @@ import Modal from '@/cms/components/Modal.vue'
 import AlertBox from '@/cms/components/AlertBox.vue'
 import Pagination from '@/cms/components/Pagination.vue'
 import VerticalMenu from '@/cms/components/VerticalMenu.vue'
+import Button from '@/cms/components/Button.vue'
+import VForm from '@/cms/components/form/vertical/VForm.vue'
+import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
+import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
+import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
 
 // composable
 import { useRole } from '@/cms/composables/useRole'
@@ -104,14 +109,9 @@ import { useRole } from '@/cms/composables/useRole'
 // types
 import type { AvailableRolesType, ParamRoleSearchType } from '@/cms/types/role'
 import type { MessageTypes } from '@/cms/types/message'
-import Button from '@/cms/components/Button.vue'
-import VForm from '@/cms/components/form/vertical/VForm.vue'
-import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
-import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
-import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
 
 const { getAllRole, deleteRole } = useRole()
-const availableRoles = ref<AvailableRolesType>()
+const availableRoles = ref<AvailableRolesType>({} as AvailableRolesType)
 const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
 const paramSearchRole = ref<ParamRoleSearchType>({} as ParamRoleSearchType)
@@ -137,7 +137,12 @@ const searchAvailableRoles = async (): Promise<void> => {
   paramSearchRole.value.per_page = perpage
   paramSearchRole.value.paginate = true
   const response = await getAllRole(paramSearchRole.value)
-  availableRoles.value = response.data
+  if(response.code == 'success'){
+    availableRoles.value = response.data
+  }else{
+    message.value = response
+  }
+  
 }
 
 const clearSearchAvailableRoles = () => {

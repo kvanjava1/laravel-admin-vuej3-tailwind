@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue'
 import { route } from 'ziggy-js';
 
-import type { ParamsUserType } from '@/cms/types/user.d';
+import type { ParamsSearchUserType, ParamsUserType } from '@/cms/types/user.d';
 import type { MessageTypes } from '@/cms/types/message';
 import type { AxiosResponse } from 'axios';
 
@@ -20,11 +20,26 @@ export const useUser = () => {
         addUser: false,
         deleteUser: false
     })
-
-    const getUser = () => {}
-
+    const getUser = async (paramSearchUser: ParamsSearchUserType): Promise<MessageTypes> => {
+        try {
+            loading.value.getUser = true
+            const response: AxiosResponse<MessageTypes> = await axios.get(
+                route('usermanagement.user', { ...paramSearchUser }),
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${authStoreData?.token}` 
+                    } 
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.getUser = false
+            return error.response?.data as MessageTypes
+        } finally {
+            loading.value.getUser = false
+        }
+    }
     const getUserDetail = () => {}
-
     const addUser = async (paramsUser: ParamsUserType): Promise<MessageTypes> => {
         try {
             loading.value.addUser = true
