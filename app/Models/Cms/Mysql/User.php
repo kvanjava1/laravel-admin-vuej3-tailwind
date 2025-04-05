@@ -3,6 +3,7 @@
 namespace App\Models\Cms\Mysql;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -11,7 +12,7 @@ use DateTimeInterface;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles, HasApiTokens;
+    use HasFactory, Notifiable, HasRoles, HasApiTokens, SoftDeletes;
 
     protected $table = "users";
     protected $fillable = [
@@ -37,6 +38,6 @@ class User extends Authenticatable
 
     protected function serializeDate(DateTimeInterface $date): string
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('d F Y H:i:s');
     }
 }

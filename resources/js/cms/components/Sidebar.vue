@@ -1,6 +1,6 @@
 <template>
   <aside ref="sidebarRef" :class="[
-    'w-70 bg-gray-800 shadow-lg p-4 fixed lg:relative z-40 h-screen',
+    'w-70 bg-gray-800 shadow-lg p-4 fixed top-0 left-0 z-40 h-screen',
     { '-translate-x-full lg:translate-x-0': !isOpen }
   ]">
     <div class="flex items-center justify-between mb-6">
@@ -46,8 +46,7 @@
             </li>
             <li class="mb-2">
               <a @click.prevent="clickToLogout"
-                class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded">Logout
-              </a>
+                class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded">Logout</a>
             </li>
           </ul>
         </li>
@@ -57,35 +56,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { HomeIcon, Bars3Icon, ChevronDownIcon } from '@heroicons/vue/24/outline'
-import { useAuth } from '@/cms/composables/useAuth'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import { HomeIcon, Bars3Icon, ChevronDownIcon } from '@heroicons/vue/24/outline';
+import { useAuth } from '@/cms/composables/useAuth';
+import { useRouter } from 'vue-router';
 
-type menuType = 'myaccount' | 'usermanagement'
-type menuValueType = { [key: string]: boolean }
+type menuType = 'myaccount' | 'usermanagement';
+type menuValueType = { [key: string]: boolean };
 
-const { logout } = useAuth()
-const router = useRouter()
+const { logout } = useAuth();
+const router = useRouter();
 const dropdowns = ref<menuValueType>({
   usermanagement: false,
   myaccount: false,
 });
 const toggleDropdown = (key: menuType): void => {
-  dropdowns.value[key] = !dropdowns.value[key]
-}
-const sidebarRef = ref<HTMLElement | null>(null)
+  dropdowns.value[key] = !dropdowns.value[key];
+};
+const sidebarRef = ref<HTMLElement | null>(null);
 const emit = defineEmits<{
-  (e: 'update:isOpen', value: boolean): void
-}>()
+  (e: 'update:isOpen', value: boolean): void;
+}>();
 const clickToLogout = (): void => {
   if (logout()) {
-    router.push({ name: 'auth.login' })
+    router.push({ name: 'auth.login' });
   }
-}
+};
 
 defineProps<{
-  isOpen: boolean
+  isOpen: boolean;
 }>();
-defineExpose({ sidebarRef })
+defineExpose({ sidebarRef });
 </script>

@@ -80,6 +80,7 @@ const paramCreateRole = ref<ParamCreateRoleType>({
   selectedPermission: []
 })
 const router = useRouter()
+
 const clickToSaveNewRole = async () => {
   message.value = await saveNewRole(paramCreateRole.value)
 
@@ -87,7 +88,8 @@ const clickToSaveNewRole = async () => {
     paramCreateRole.value = {} as ParamCreateRoleType
   }
 }
-onBeforeMount(async () => {
+
+const getAvailablePermission = async (): Promise<void> => {
   const response = await getAllPermission();
 
   if (response.code === 'success') {
@@ -95,5 +97,9 @@ onBeforeMount(async () => {
   } else {
     console.error(response);
   }
+}
+
+onBeforeMount(async () => {
+  getAvailablePermission()
 });
 </script>

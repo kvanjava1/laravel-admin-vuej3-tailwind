@@ -76,14 +76,17 @@ const editRoleParam = ref<ParamCreateRoleType>({
 const route = useRouter().currentRoute;
 const roleIdIsBeingEdited = ref<number>(Number(route.value.params.id));
 
-onBeforeMount(async () => {
-  const responseAllPermission = await getAllPermission();
-  if (responseAllPermission.code === 'success') {
-    groupedPermissions.value = responseAllPermission.data;
-  } else {
-    console.error(responseAllPermission);
-  }
+const getAvailablePermission = async (): Promise<void> => {
+  const response = await getAllPermission();
 
+  if (response.code === 'success') {
+    groupedPermissions.value = response.data;
+  } else {
+    console.error(response);
+  }
+}
+
+const getRoleDetailIsBeingEdited = async (): Promise<void> => {
   const responseDetailRole = await getRoleDetail(roleIdIsBeingEdited.value)
   if (responseDetailRole.code === 'success') {
     editRoleParam.value.roleName = responseDetailRole.data.name
@@ -95,6 +98,11 @@ onBeforeMount(async () => {
   } else {
     console.error(responseDetailRole)
   }
+}
+
+onBeforeMount(async () => {
+  getAvailablePermission()
+  getRoleDetailIsBeingEdited()
 });
 
 const clickToUpdateRole = async (): Promise<void> => {

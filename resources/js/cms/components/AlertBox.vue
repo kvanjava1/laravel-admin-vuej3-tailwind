@@ -4,14 +4,14 @@
         <ul v-if="message.code == 'error_validation' && Object.keys(message.message.detail).length" class="pt-5">
             <li v-for="detail in message.message.detail" :key="detail">
                 <ul>
-                    <li v-for="data in detail">
-                        {{ data }}
+                    <li v-for="moreDetail in detail" class="capitalize">
+                        {{ moreDetail }}
                     </li>
                 </ul>
             </li>
         </ul>
         <ul v-if="message.code !== 'error_validation' && Object.keys(message.message.detail).length" class="pt-5">
-            <li v-for="detail in message.message.detail" :key="detail">
+            <li v-for="detail in message.message.detail" :key="detail" class="capitalize">
                 {{ detail }}
             </li>
         </ul>

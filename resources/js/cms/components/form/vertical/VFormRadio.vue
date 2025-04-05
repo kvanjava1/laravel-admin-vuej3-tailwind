@@ -5,7 +5,7 @@
             type="radio"
             :name="name"
             :value="radioValue"
-            :checked="modelValue === radioValue"
+            :checked="String(modelValue) === String(radioValue)"
             @input="handleInput"
             class="h-5 w-5 rounded border border-gray-300 text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition duration-150 ease-in-out"
         />

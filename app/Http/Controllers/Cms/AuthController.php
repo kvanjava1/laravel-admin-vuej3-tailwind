@@ -40,20 +40,7 @@ class AuthController extends Controller
                     ->first();
     
             if (!$user || !Hash::check($req->password, $user->password)) {
-                $userNameNotFound = [
-                    'Username or Password did not match any record',
-                    'Did you have account?'
-                ];
-
-                $response = $this->message
-                                ->setCode('error_auth')
-                                ->setMessageHead('Hmmmm something wrong')
-                                ->setMessageDetail($userNameNotFound)
-                                ->toArray();
-
-                return response()->json(
-                    $response, 400
-                );
+                throw new Exception('Username or password did not match any record', 400);
             }
             
             $abilities = $user->getAllPermissions()
@@ -101,7 +88,7 @@ class AuthController extends Controller
                         ->toArray();
             
             return response()->json(
-                $response, 500
+                $response, $e->getCode()
             );
         }
     }

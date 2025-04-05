@@ -2,7 +2,7 @@
     <Dashboard title="Manage Users" breadcrumb="Add User">
         <AlertBox :message="message" />
         <ContentBox title="Add User">
-            <VForm @submit="clickToSaveAddUser">
+            <VForm @submit="clickToUpdateUser">
                 <VFormItem>
                     <VFormLabel label="Name" />
                     <VFormInput v-model="paramsUser.name" type="text" name="name" placeholder="e.g., Swansa" />
@@ -42,7 +42,7 @@
                                 <label>Cancel</label>
                             </Button>
                         </router-link>
-                        <Button :disabled="loading.addUser">
+                        <Button>
                             <PlusIcon class="w-5 h-5" />
                             <label>Save</label>
                         </Button>
@@ -57,6 +57,7 @@
 // system
 import { XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router'; // Import router
 
 // components
 import ContentBox from '@/cms/components/ContentBox.vue'
@@ -71,34 +72,49 @@ import VFormInput from '@/cms/components/form/vertical/VFormInput.vue';
 import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 
-import type { ParamsUserType } from '@/cms/types/user';
-import type { ParamRoleSearchType } from '@/cms/types/role';
+import type { ParamsUserType, UserType } from '@/cms/types/user';
+import type { ParamRoleSearchType, RoleType } from '@/cms/types/role';
 import type { MessageTypes } from '@/cms/types/message';
 
 import { useRole } from '@/cms/composables/useRole';
 import { useUser } from '@/cms/composables/useUser';
 
+
 const paramsUser = ref<ParamsUserType>({} as ParamsUserType)
 const { getAllRole } = useRole()
-const { addUser, loading } = useUser()
+const { addUser, loading, getUserDetail, updateUser } = useUser()
 const message = ref<MessageTypes>({} as MessageTypes)
 const searchRole = ref<MessageTypes>()
+const route = useRouter().currentRoute
+const userIdIsBeingEdited = ref<number>(Number(route.value.params.id));
 
-const clickToSaveAddUser = async () => {
-    const responseAddUser = await addUser(paramsUser.value)
-    message.value = responseAddUser
+const clickToUpdateUser = async () => {
+    const responseUpdateUser = await updateUser(userIdIsBeingEdited.value, paramsUser.value)
+    message.value = responseUpdateUser
 }
 
 const searchAvailableRoles = async (): Promise<void> => {
     searchRole.value = await getAllRole({ paginate: false } as ParamRoleSearchType)
-
     if (searchRole.value.code !== 'success') {
         message.value = searchRole.value
     }
 }
 
+const getUserDetailIsBeingEdited = async () : Promise<void> => {
+    const response = await getUserDetail(userIdIsBeingEdited.value)
+    if (response.code !== 'success'){
+        message.value = response
+        return
+    }
+    const detailUser = response.data as UserType    
+    paramsUser.value.name = detailUser.name
+    paramsUser.value.email = detailUser.email
+    paramsUser.value.roleId = detailUser.roles[0].id
+    paramsUser.value.activeStatus = detailUser.is_active
+}
+
 onBeforeMount(async () => {
     searchAvailableRoles()
-    console.log(loading.value.addUser)
+    getUserDetailIsBeingEdited()
 })
 </script>

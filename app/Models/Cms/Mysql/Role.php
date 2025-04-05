@@ -11,6 +11,6 @@ class Role extends SpatieRole
 {
     protected function serializeDate(DateTimeInterface $date): string
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('d F Y H:i:s');
     }
 }

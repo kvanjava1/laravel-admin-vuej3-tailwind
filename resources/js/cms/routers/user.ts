@@ -38,6 +38,11 @@ const routes: RouteRecordRaw[] = [
             path: 'add',
             name: 'usermanagement.user.add',
             component: () => import('@/cms/pages/user/user/AddUser.vue'),
+          },
+          {
+            path: ':id/edit',
+            name: 'usermanagement.user.edit',
+            component: () => import('@/cms/pages/user/user/EditUser.vue'),
           }
         ]
       }

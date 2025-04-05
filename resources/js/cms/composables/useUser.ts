@@ -13,22 +13,25 @@ export const useUser = () => {
         getUser: boolean,
         getUserDetail: boolean,
         addUser: boolean,
-        deleteUser: boolean
+        deleteUser: boolean,
+        updateUser: boolean
     }>({
         getUser: false,
         getUserDetail: false,
         addUser: false,
-        deleteUser: false
+        deleteUser: false,
+        updateUser: false
     })
+
     const getUser = async (paramSearchUser: ParamsSearchUserType): Promise<MessageTypes> => {
         try {
             loading.value.getUser = true
             const response: AxiosResponse<MessageTypes> = await axios.get(
                 route('usermanagement.user', { ...paramSearchUser }),
-                { 
-                    headers: { 
-                        Authorization: `Bearer ${authStoreData?.token}` 
-                    } 
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
                 }
             )
             return response.data
@@ -39,17 +42,37 @@ export const useUser = () => {
             loading.value.getUser = false
         }
     }
-    const getUserDetail = () => {}
+
+    const getUserDetail = async (userId: number): Promise<MessageTypes> => {
+        try {
+            loading.value.getUserDetail = true
+            const response: AxiosResponse<MessageTypes> = await axios.get(
+                route('usermanagement.user.detail', { id: userId }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.getUserDetail = false
+            return error.response?.data as MessageTypes
+        } finally {
+            loading.value.getUserDetail = false
+        }
+    }
+
     const addUser = async (paramsUser: ParamsUserType): Promise<MessageTypes> => {
         try {
             loading.value.addUser = true
             const response: AxiosResponse<MessageTypes> = await axios.post(
                 route('usermanagement.user.add'),
                 paramsUser,
-                { 
-                    headers: { 
-                        Authorization: `Bearer ${authStoreData?.token}` 
-                    } 
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
                 }
             )
             return response.data
@@ -61,9 +84,46 @@ export const useUser = () => {
         }
     }
 
-    const updateUser = () => {}
+    const updateUser = async (userId: number, paramsUser: ParamsUserType): Promise<MessageTypes> => {
+        try {
+            loading.value.updateUser = true
+            const response: AxiosResponse<MessageTypes> = await axios.put(
+                route('usermanagement.user.update', { id: userId }),
+                paramsUser,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.addUser = false
+            return error.response?.data as MessageTypes
+        } finally {
+            loading.value.addUser = false
+        }
+    }
 
-    const deleteUser = () => {}
+    const deleteUser = async (userIdIsBeingDeleted: number): Promise<MessageTypes> => {
+        try {
+            loading.value.deleteUser = true
+            const response: AxiosResponse<MessageTypes> = await axios.delete(
+                route('usermanagement.user.delete', { id: userIdIsBeingDeleted }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.deleteUser = false
+            return error.response?.data as MessageTypes
+        } finally {
+            loading.value.deleteUser = false
+        }
+    }
 
     return {
         getUser,
