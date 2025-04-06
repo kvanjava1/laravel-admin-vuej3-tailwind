@@ -93,7 +93,7 @@ class LogService
                 'id' => $this->request->user()?->id ?? null,
                 'name' => $this->request->user()?->name ?? null
             ];
-            $buildContext['input'] = $this->request->except(['password', 'password_confirmation']);
+            $buildContext['input'] = $this->request->except(['password', 'passwordConfirmation', 'currentPassword']);
             $buildContext['ip'] = $this->request->ip();
             $buildContext['method'] = $this->request->method();
             $buildContext['url'] = $this->request->fullUrl();

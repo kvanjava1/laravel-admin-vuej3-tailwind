@@ -107,6 +107,5 @@ onBeforeMount(async () => {
 
 const clickToUpdateRole = async (): Promise<void> => {
   message.value = await updateRole(roleIdIsBeingEdited.value, editRoleParam.value)
-  console.log(message.value)
 }
 </script>

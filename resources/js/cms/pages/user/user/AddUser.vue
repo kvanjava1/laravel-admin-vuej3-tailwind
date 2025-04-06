@@ -97,8 +97,7 @@ const searchAvailableRoles = async (): Promise<void> => {
     }
 }
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
     searchAvailableRoles()
-    console.log(loading.value.addUser)
 })
 </script>

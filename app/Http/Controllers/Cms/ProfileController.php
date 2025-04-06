@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Cms;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
-use App\Http\Libraries\Message;
-use App\Http\Services\Cms\LogService;
-use App\Models\Cms\Mysql\User;
-use App\Models\Cms\Mysql\Role;
 use Exception;
+use Illuminate\Support\Facades\Hash;
+
+use App\Http\Libraries\Message;
+
+use App\Http\Services\Cms\LogService;
 
 class ProfileController extends Controller
 {
@@ -28,12 +29,9 @@ class ProfileController extends Controller
                 ->setRequest($req)
                 ->debug('updateUserDetail attempt started');
 
-            $user = User::with(['roles'])
-                    ->where('id', $req->route('id'))
-                    ->first();
-
-            if (!$user) {
-                throw new Exception('user detail not found', 400);
+            if(!$req->user()) 
+            {
+                throw new Exception('No User Detail was found', 400);
             }
 
             $validatedData = $req->validate([
@@ -42,47 +40,35 @@ class ProfileController extends Controller
                     'string',
                     'max:255',
                 ],
-                'email' => [
-                    'required',
+                'oldPassword' => [
                     'string',
-                    'email',
-                    'max:255',
-                    "unique:users,email,{$req->route('id')}",
+                    'min:8'
                 ],
                 'password' => [
                     'string',
                     'min:8',
-                    'confirmed:passwordConfirmation',
-                ],
-                'roleId' => [
-                    'required',
-                    'integer',
-                    'exists:roles,id',
-                ],
-                'activeStatus' => [
-                    'required',
-                    'boolean',
-                ],
+                    'confirmed:passwordConfirmation'
+                ]
             ]);
 
-            $userBeforeUpdate = $user->toArray();
-            $user->name = $validatedData['name'];
-            $user->email = $validatedData['email'];
-            $user->is_active = $validatedData['activeStatus'];
+            $userBeforeUpdate = $req->user()->toArray();
+            $req->user()->name = $validatedData['name'];
 
             if (!empty($validatedData['password'])) {
-                $user->password = bcrypt($validatedData['password']);
+                if (!Hash::check($req->get('oldPassword'), $req->user()->password)) {
+                    throw new Exception('Invalid Password', 400);
+                }
+
+                $req->user()->password = bcrypt($validatedData['password']);
             }
 
-            $role = Role::findOrFail($validatedData['roleId']);
-            $user->syncRoles($role);
-            $user->save();
+            $req->user()->save();
 
             $this->logService
                 ->setRequest($req)
                 ->withContext([
                     'before_update' => $userBeforeUpdate,
-                    'after_update' => $user->toArray()
+                    'after_update' => $req->user()->toArray()
                 ])
                 ->info('updateUserDetail success');
 
@@ -119,7 +105,7 @@ class ProfileController extends Controller
 
             return response()->json(
                 $response,
-                $e->getCode()
+                $e->getCode() ? $e->getCode() : 500
             );
         }
     }
@@ -127,38 +113,18 @@ class ProfileController extends Controller
     public function getProfileDetail(Request $req): JsonResponse
     {
         try {
-            $user = User::with([
-                'roles' => function ($query): void {
-                    $query->select(['id', 'name', 'guard_name']);
-                }
-            ])
-                ->where('id', $req->route('id'))
-                ->select([
-                    'id',
-                    'name',
-                    'email',
-                    'is_active',
-                    'created_at',
-                    'updated_at'
-                ])
-                ->first();
-
-            if (!$user) {
-                throw new Exception('user detail not found', 400);
-            }
-
             $response = $this->message
                 ->setCode('success')
-                ->setMessageHead('get users list successfully')
-                ->setData($user->toArray())
+                ->setMessageHead('get profile detail successfully')
+                ->setData($req->user() ? $req->user()->toArray() : [])
                 ->toArray();
 
-            return response()->json($response, 200);
+                return response()->json($response, 200);
         } catch (Exception $e) {
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
-                ->error('get all user process failed');
+                ->error('getProfileDetail process failed');
 
             $response = $this->message
                 ->setCode('error_system')
@@ -168,7 +134,7 @@ class ProfileController extends Controller
 
             return response()->json(
                 $response,
-                $e->getCode()
+                $e->getCode() ? $e->getCode() : 500
             );
         }
     }

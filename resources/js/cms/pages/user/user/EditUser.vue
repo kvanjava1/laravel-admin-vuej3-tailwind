@@ -89,8 +89,7 @@ const route = useRouter().currentRoute
 const userIdIsBeingEdited = ref<number>(Number(route.value.params.id));
 
 const clickToUpdateUser = async () => {
-    const responseUpdateUser = await updateUser(userIdIsBeingEdited.value, paramsUser.value)
-    message.value = responseUpdateUser
+    message.value = await updateUser(userIdIsBeingEdited.value, paramsUser.value)
 }
 
 const searchAvailableRoles = async (): Promise<void> => {

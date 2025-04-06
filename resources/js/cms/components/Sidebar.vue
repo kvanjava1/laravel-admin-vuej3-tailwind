@@ -41,7 +41,7 @@
           </a>
           <ul v-show="dropdowns.myaccount" class="pl-4 mt-2">
             <li class="mb-2">
-              <router-link to="/buttons"
+              <router-link :to="{ name: 'account.profile.index'}"
                 class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded">Profile</router-link>
             </li>
             <li class="mb-2">
@@ -74,7 +74,8 @@ const toggleDropdown = (key: menuType): void => {
   dropdowns.value[key] = !dropdowns.value[key];
 };
 const sidebarRef = ref<HTMLElement | null>(null);
-const emit = defineEmits<{
+
+defineEmits<{
   (e: 'update:isOpen', value: boolean): void;
 }>();
 const clickToLogout = (): void => {
