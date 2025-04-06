@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { XMarkIcon, PencilIcon } from '@heroicons/vue/24/outline'
+import { PencilIcon } from '@heroicons/vue/24/outline'
 
 import { useProfile } from '@/cms/composables/useProfile'
 
