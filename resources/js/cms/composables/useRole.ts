@@ -5,7 +5,7 @@ import { useAuthStore } from '@/cms/stores/useAuthStore';
 
 import type { MessageTypes } from '@/cms/types/message.d';
 import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
-import type { AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 export const useRole = () => {
     const { authStoreData } = useAuthStore();
@@ -31,14 +31,21 @@ export const useRole = () => {
             );
             return response.data;
         } catch (error: any) {
-            return error.response?.data as MessageTypes;
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: {
+                    head: 'Error',
+                    detail: [error.message]
+                }
+            } as MessageTypes
         }
     }
 
     const getAllRole = async (query: ParamRoleSearchType): Promise<MessageTypes> => {
         try {
             const response: AxiosResponse<MessageTypes> = await axios.get(
-                route('usermanagement.role', { ...query  }),
+                route('usermanagement.role', { ...query }),
                 {
                     headers: {
                         Authorization: `Bearer ${authStoreData?.token}`
@@ -47,7 +54,14 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return error.response.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         }
     }
 
@@ -57,33 +71,47 @@ export const useRole = () => {
             const response: AxiosResponse<MessageTypes> = await axios.post(
                 route('usermanagement.role.add'),
                 newRole,
-                { 
-                    headers: { 
-                        Authorization: `Bearer ${authStoreData?.token}` 
-                    } 
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
                 }
             )
             return response.data
         } catch (error: any) {
-            return error.response.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.saveNewRole = false
         }
     }
 
-    const getRoleDetail = async (id: number): Promise<MessageTypes>  => {
+    const getRoleDetail = async (id: number): Promise<MessageTypes> => {
         try {
             const response: AxiosResponse<MessageTypes> = await axios.get(
                 route('usermanagement.role.detail', { id: id }),
-                { 
-                    headers: { 
-                        Authorization: `Bearer ${authStoreData?.token}` 
-                    } 
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
                 }
             )
-            return response.data        
+            return response.data
         } catch (error: any) {
-            return error.response.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         }
     }
 
@@ -95,13 +123,20 @@ export const useRole = () => {
                 editRole,
                 {
                     headers: {
-                        Authorization: `Bearer ${authStoreData?.token}` 
+                        Authorization: `Bearer ${authStoreData?.token}`
                     }
                 }
             )
             return response.data
         } catch (error: any) {
-            return error.response.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.updateNewRole = false
         }
@@ -114,25 +149,32 @@ export const useRole = () => {
                 route('usermanagement.role.delete', { id: roleIdIsBeingDeleted }),
                 {
                     headers: {
-                        Authorization: `Bearer ${authStoreData?.token}` 
+                        Authorization: `Bearer ${authStoreData?.token}`
                     }
                 }
             )
             return response.data
         } catch (error: any) {
-            return error.response.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.deleteRole = false
         }
     }
-    
-    return { 
-        deleteRole, 
-        getRoleDetail, 
-        getAllPermission, 
-        saveNewRole, 
-        getAllRole, 
-        updateRole, 
-        loading 
+
+    return {
+        deleteRole,
+        getRoleDetail,
+        getAllPermission,
+        saveNewRole,
+        getAllRole,
+        updateRole,
+        loading
     }
 }

@@ -1,11 +1,11 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { route } from 'ziggy-js';
 
 import { useAuthStore } from "@/cms/stores/useAuthStore"
 import type { AuthStoreTypes } from '@/cms/types/authstore';
 import type { LoginTypes } from '@/cms/types/auth.d';
 import type { MessageTypes } from "@/cms/types/message.d"
-import type { AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 export const useAuth = () => {
 
@@ -26,7 +26,14 @@ export const useAuth = () => {
             return response.data
         } catch (error: any) {
             loading.value.login = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: {
+                    head: 'Error',
+                    detail: [error.message]
+                }
+            } as MessageTypes
         } finally {
             loading.value.login = false
         }
@@ -52,9 +59,14 @@ export const useAuth = () => {
                     }
                 }
             )
+
+            if(response.data.code == "success"){
+                setAuthData(response.data.data)
+                return true
+            }else{
+                return false
+            }
             
-            setAuthData(response.data.data)
-            return true
         } catch (error: any) {
             return false
         }
@@ -66,7 +78,6 @@ export const useAuth = () => {
             deleteAuthData()
             return true
         } catch (error: any) {
-            console.log(error)
             return false
         }
     };

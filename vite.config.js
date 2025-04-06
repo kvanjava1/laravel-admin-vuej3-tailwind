@@ -7,10 +7,10 @@ export default defineConfig({
   plugins: [
     laravel({
       input: [
-        'resources/css/cms/app.css', 
-                'resources/js/cms/app.ts'
+        'resources/css/cms/app.css',
+        'resources/js/cms/app.ts'
       ],
-            refresh: true,
+      refresh: true,
     }),
     vue({
       template: {
@@ -20,11 +20,11 @@ export default defineConfig({
         },
       },
     }),
-        tailwindcss(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {
-            '@': '/resources/js', // Match tsconfig paths
+      '@': '/resources/js', // Match tsconfig paths
     },
     extensions: ['.js', '.ts', '.vue', '.json'], // File extensions to resolve
   },

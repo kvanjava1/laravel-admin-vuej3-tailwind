@@ -1,9 +1,9 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { route } from 'ziggy-js';
 
 import type { ParamsSearchUserType, ParamsUserType } from '@/cms/types/user.d';
 import type { MessageTypes } from '@/cms/types/message';
-import type { AxiosResponse } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 import { useAuthStore } from '@/cms/stores/useAuthStore';
 
@@ -37,7 +37,14 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.getUser = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.getUser = false
         }
@@ -57,7 +64,14 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.getUserDetail = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.getUserDetail = false
         }
@@ -78,7 +92,14 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.addUser = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.addUser = false
         }
@@ -99,7 +120,14 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.addUser = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.addUser = false
         }
@@ -119,7 +147,14 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.deleteUser = false
-            return error.response?.data as MessageTypes
+            const axiosError = error as AxiosError<MessageTypes>;
+            return axiosError.response?.data ?? {
+                code: 'error_unknown',
+                message: { 
+                    head: 'Error', 
+                    detail: [error.message] 
+                }
+            } as MessageTypes
         } finally {
             loading.value.deleteUser = false
         }
