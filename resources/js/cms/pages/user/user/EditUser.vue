@@ -42,7 +42,7 @@
                                 <label>Cancel</label>
                             </Button>
                         </router-link>
-                        <Button>
+                        <Button :disabled="loading.updateUser">
                             <PlusIcon class="w-5 h-5" />
                             <label>Save</label>
                         </Button>
@@ -73,7 +73,7 @@ import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 
 import type { ParamsUserType, UserType } from '@/cms/types/user';
-import type { ParamRoleSearchType, RoleType } from '@/cms/types/role';
+import type { ParamRoleSearchType } from '@/cms/types/role';
 import type { MessageTypes } from '@/cms/types/message';
 
 import { useRole } from '@/cms/composables/useRole';
@@ -82,7 +82,7 @@ import { useUser } from '@/cms/composables/useUser';
 
 const paramsUser = ref<ParamsUserType>({} as ParamsUserType)
 const { getAllRole } = useRole()
-const { addUser, loading, getUserDetail, updateUser } = useUser()
+const { loading, getUserDetail, updateUser } = useUser()
 const message = ref<MessageTypes>({} as MessageTypes)
 const searchRole = ref<MessageTypes>()
 const route = useRouter().currentRoute

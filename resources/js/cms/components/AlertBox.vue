@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import type { MessageTypes } from "@/cms/types/message";
 
-const props = defineProps<{ message: MessageTypes }>();
+defineProps<{ message: MessageTypes }>();
 const getAlertClasses = (code: string) => {
     return code !== 'success'
         ? 'bg-red-100 border border-red-400 text-red-700'

@@ -51,7 +51,6 @@
 <script setup lang="ts">
 // system
 import { ref, onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'; // Import router
 import { XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline';
 
 // components
@@ -79,7 +78,6 @@ const paramCreateRole = ref<ParamCreateRoleType>({
   roleName: '',
   selectedPermission: []
 })
-const router = useRouter()
 
 const clickToSaveNewRole = async () => {
   message.value = await saveNewRole(paramCreateRole.value)

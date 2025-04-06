@@ -55,40 +55,32 @@ const props = defineProps<{
     };
     method: (page: number) => Promise<void>;
 }>();
-
 const totalPages = computed(() => {
     return (props.meta.last_page ?? Math.ceil((props.meta.per_page * props.meta.current_page) / props.meta.per_page)) || 1;
 });
-
 const pageRange = computed(() => {
     return window.innerWidth < 640 ? 3 : 5; // 3 on mobile, 5 on larger
 });
-
-const halfRange = computed(() => Math.floor(pageRange.value / 2));
-
+const halfRange = computed(() => Math.floor(pageRange.value / 2))
 const startPage = computed(() => Math.max(2, props.meta.current_page - halfRange.value));
 const endPage = computed(() => Math.min(totalPages.value - 1, props.meta.current_page + halfRange.value));
-
 const displayedPages = computed(() => {
     const pages = [];
     for (let i = startPage.value; i <= endPage.value; i++) {
         pages.push(i);
     }
     return pages;
-});
-
+})
 const fetchPage = (page: number) => {
     if (props.meta.current_page !== page) {
         props.method(page);
     }
 };
-
 const prevPage = () => {
     if (props.meta.current_page > 1) {
         props.method(props.meta.current_page - 1);
     }
 };
-
 const nextPage = () => {
     if (props.meta.current_page < totalPages.value) {
         props.method(props.meta.current_page + 1);

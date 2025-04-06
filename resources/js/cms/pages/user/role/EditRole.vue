@@ -91,7 +91,7 @@ const getRoleDetailIsBeingEdited = async (): Promise<void> => {
   if (responseDetailRole.code === 'success') {
     editRoleParam.value.roleName = responseDetailRole.data.name
 
-    Object.entries(responseDetailRole.data.permissions as { name: string }[]).forEach(([key, val]) => {
+    Object.entries(responseDetailRole.data.permissions as { name: string }[]).forEach(([_, val]) => {
       editRoleParam.value.selectedPermission.push(val.name)
     });
 

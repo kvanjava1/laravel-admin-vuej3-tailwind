@@ -47,7 +47,7 @@ import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue';
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue';
 import VerticalMenu from '@/cms/components/VerticalMenu.vue';
 import Button from '@/cms/components/Button.vue';
-import { ArrowRightOnRectangleIcon, ArrowPathIcon } from '@heroicons/vue/20/solid';
+import { ArrowRightOnRectangleIcon } from '@heroicons/vue/20/solid';
 
 const inputLogin = ref<LoginTypes>({} as LoginTypes)
 const { login, loading } = useAuth();

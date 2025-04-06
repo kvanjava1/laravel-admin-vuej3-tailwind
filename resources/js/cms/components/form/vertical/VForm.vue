@@ -1,6 +1,11 @@
 <template>
-    <form class="space-y-4" @submit.prevent :submit="() => $emit('submit')">
-        <slot/>
+    <form class="space-y-4" @submit.prevent="$emit('submit')">
+      <slot />
     </form>
-</template>
-<!-- Parent passes down explicit submit action -->
+  </template>
+  
+  <script setup lang="ts">
+  defineEmits<{
+    (e: 'submit'): void
+  }>()
+  </script>

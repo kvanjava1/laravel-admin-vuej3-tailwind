@@ -7,9 +7,21 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["resources/js/*"]
-    }
+      "@/*": ["resources/js/*"],
+      "~/*": ["resources/css/*"]
+    },
+    "types": ["vite/client", "vue"],
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
-  "include": ["resources/js/**/*", "resources/js/**/*.vue", "resources/css/**/*",],
-  "exclude": ["node_modules"]
+  "include": [
+    "resources/js/**/*",
+    "resources/js/**/*.vue",
+    "resources/css/**/*"
+  ],
+  "exclude": ["node_modules", "public/build"]
 }

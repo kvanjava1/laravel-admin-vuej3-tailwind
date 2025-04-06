@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 // system
-import { onBeforeMount, ref, version } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 // components
