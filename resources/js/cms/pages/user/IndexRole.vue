@@ -19,8 +19,8 @@
         </Button>
       </VerticalMenu>
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-grey-200">
-          <thead class="bg-black-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-100">
             <tr>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
@@ -32,7 +32,8 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(val, key) in availableRoles?.data">
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                {{ (availableRoles?.per_page ?? 0) * (availableRoles?.current_page ?? 0) - (availableRoles?.per_page ??
+                {{ (availableRoles?.per_page ?? 0) * (availableRoles?.current_page ?? 0) - (availableRoles?.per_page
+                  ??
                   0) + key + 1 }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.name }}</td>
@@ -59,7 +60,6 @@
       </div>
       <Pagination :meta="availableRoles ?? { per_page: 0, current_page: 1 }" :method="getAvailableRoles" />
     </ContentBox>
-
     <!-- search modal -->
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Roles">
@@ -83,7 +83,6 @@
         </VForm>
       </ContentBox>
     </Modal>
-
   </Dashboard>
 </template>
 

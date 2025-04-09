@@ -20,7 +20,7 @@
       </VerticalMenu>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+          <thead class="bg-gray-100">
             <tr>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
@@ -62,6 +62,7 @@
       </div>
       <Pagination :meta="availableUser ?? { per_page: 0, current_page: 1 }" :method="getAvailableUser" />
     </ContentBox>
+    <!-- search modal -->
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Roles">
         <VForm @submit="searchAvailableUser">
@@ -160,7 +161,6 @@ const getAvailableUser = async (page: number = 1) => {
 const searchAvailableRoles = async (): Promise<void> => {
   const paramsSearchRole: ParamRoleSearchType = { paginate: false } as ParamRoleSearchType
   searchRole.value = await getAllRole(paramsSearchRole)
-
   if (searchRole.value.code !== 'success') {
     message.value = searchRole.value
   }

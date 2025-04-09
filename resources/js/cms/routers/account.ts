@@ -3,7 +3,7 @@ import { authCheck } from '@/cms/middlewares/authmiddleware'
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/account',
+    path: '/my-account',
     beforeEnter: [authCheck],
     children: [
       {
