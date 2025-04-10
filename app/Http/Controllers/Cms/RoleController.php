@@ -52,9 +52,7 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         } catch (Exception $e) {
-
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -66,7 +64,6 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         }
     }
 

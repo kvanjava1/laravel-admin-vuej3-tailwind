@@ -93,9 +93,7 @@ class UserController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         } catch (ValidationException $e) {
-
             $this->logService
                 ->setRequest($req)
                 ->setValidationException($e)
@@ -108,8 +106,6 @@ class UserController extends Controller
                 ->toArray();
 
             return response()->json($response, 400);
-
-
         } catch (Exception $e) {
             $this->logService
                 ->setRequest($req)

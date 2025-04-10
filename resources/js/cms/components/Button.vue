@@ -17,6 +17,7 @@ const buttonClasses = [
     props.color === 'cyan' ? 'bg-cyan-600 hover:bg-cyan-700' : // Changed 'grey' → 'gray'
     'bg-green-600 hover:bg-green-700',
     'text-white px-4 py-2 rounded flex items-center justify-center gap-2',
-    'disabled:bg-gray-400 disabled:cursor-not-allowed'
+    'disabled:bg-gray-400 disabled:cursor-not-allowed',
+    'px-4 py-3'
 ].join(' ');
 </script>
