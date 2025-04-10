@@ -19,7 +19,19 @@
                 </Button>
             </VerticalMenu>
             <div class="overflow-x-auto">
-                <!-- here for showing multiple category -->
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
+                            <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Created At</th>
+                            <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Update At</th>
+                            <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    </tbody>
+                </table>
             </div>
         </ContentBox>
         <Modal v-show="showSearchModal">
