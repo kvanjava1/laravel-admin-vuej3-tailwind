@@ -120,21 +120,11 @@ const message = ref<MessageTypes>({} as MessageTypes)
 const perpage: number = 5
 
 onBeforeMount(async (): Promise<void> => {
-  getAvailableRoles(1)
+  getAvailableRoles()
 })
 
-const getAvailableRoles = async (page: number): Promise<void> => {
+const getAvailableRoles = async (page: number = 1): Promise<void> => {
   paramSearchRole.value.page = page
-  paramSearchRole.value.per_page = perpage
-  paramSearchRole.value.paginate = true
-  const response = await getAllRole(paramSearchRole.value)
-  availableRoles.value = response.data
-}
-
-const searchAvailableRoles = async (): Promise<void> => {
-  showSearchModal.value = false
-  isSearching.value = true
-  paramSearchRole.value.page = 1
   paramSearchRole.value.per_page = perpage
   paramSearchRole.value.paginate = true
   const response = await getAllRole(paramSearchRole.value)
@@ -145,10 +135,19 @@ const searchAvailableRoles = async (): Promise<void> => {
   }
 }
 
+const searchAvailableRoles = async (): Promise<void> => {
+  showSearchModal.value = false
+  isSearching.value = true
+  paramSearchRole.value.page = 1
+  paramSearchRole.value.per_page = perpage
+  paramSearchRole.value.paginate = true
+  getAvailableRoles()
+}
+
 const clearSearchAvailableRoles = () => {
   paramSearchRole.value = {} as ParamRoleSearchType
   isSearching.value = false
-  getAvailableRoles(1)
+  getAvailableRoles()
 }
 
 const clickToDeleteRole = async (id: number): Promise<void> => {

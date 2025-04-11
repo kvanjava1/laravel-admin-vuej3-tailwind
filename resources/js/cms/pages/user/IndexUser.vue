@@ -25,6 +25,7 @@
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Active</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Role</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Created At</th>
               <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Update At</th>
@@ -34,10 +35,15 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(val, key) in availableUser.data">
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{
-                (availableUser?.per_page ?? 0) * (availableUser?.current_page ?? 0) - (availableUser?.per_page ?? 0) + key + 1
+                (availableUser?.per_page ?? 0) * (availableUser?.current_page ?? 0) - (availableUser?.per_page ?? 0) +
+                key + 1
               }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.name }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.email }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
+                <span v-if="val.is_active" class="px-2 inline-flex font-semibold rounded-full bg-green-100 text-green-800 capitalize">active</span>
+                <span v-else class="px-2 inline-flex font-semibold rounded-full bg-red-100 text-red-800 capitalize">inactive</span>
+              </td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.roles[0].name }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.created_at }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.updated_at }}</td>
@@ -172,12 +178,7 @@ const searchAvailableUser = async (): Promise<void> => {
   paramsSearchUser.value.page = 1
   paramsSearchUser.value.perPage = perPage
   paramsSearchUser.value.paginate = true
-  const response = await getUser(paramsSearchUser.value)
-  if (response.code == 'success') {
-    availableUser.value = response.data
-  } else {
-    message.value = response
-  }
+  getAvailableUser()
 }
 
 const clearSearchAvailableRoles = () => {
@@ -188,10 +189,10 @@ const clearSearchAvailableRoles = () => {
 
 const clickToDelete = async (userIdIsBeingDeleted: number): Promise<void> => {
   const confirm = window.confirm('Are you sure to delete this role?')
-  if(confirm){
+  if (confirm) {
     const response = await deleteUser(userIdIsBeingDeleted)
     message.value = response
-    if(response.code == 'success'){
+    if (response.code == 'success') {
       getAvailableUser(availableUser.value.current_page)
     }
   }

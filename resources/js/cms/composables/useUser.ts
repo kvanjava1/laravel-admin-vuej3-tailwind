@@ -119,7 +119,7 @@ export const useUser = () => {
             )
             return response.data
         } catch (error: any) {
-            loading.value.addUser = false
+            loading.value.updateUser = false
             const axiosError = error as AxiosError<MessageTypes>;
             return axiosError.response?.data ?? {
                 code: 'error_unknown',
@@ -129,7 +129,7 @@ export const useUser = () => {
                 }
             } as MessageTypes
         } finally {
-            loading.value.addUser = false
+            loading.value.updateUser = false
         }
     }
 
