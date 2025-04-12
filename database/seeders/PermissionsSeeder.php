@@ -19,7 +19,6 @@ class PermissionsSeeder extends Seeder
             'dashboard' => ['dashboard.view'],
             'users' => ['users.role.view', 'users.role.add'],
         ];
-
         foreach ($permissionGroups as $group => $permissions) {
             foreach ($permissions as $permission) {
                 Permission::firstOrCreate([
@@ -33,18 +32,19 @@ class PermissionsSeeder extends Seeder
             'name' => 'superadmin',
             'guard_name' => 'api',
         ]);
-
+        
         $superAdminRole->syncPermissions(Permission::where('guard_name', 'api')->get());
-
         $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            [
+                'email' => 'admin@example.com'
+            ],
             [
                 'name' => 'Super Admin',
                 'email' => 'admin@example.com',
                 'password' => Hash::make('admin123'), // Ensure password is hashed
+                'is_active' => 1
             ]
         );
-
         $admin->assignRole(Role::findByName('superadmin', 'api'));
     }
 }

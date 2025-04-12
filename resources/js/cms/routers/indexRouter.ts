@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import userRoutes from './user'
-import dashboardRoutes from './dashboard'
-import authRoutes from './auth'
-import accountRoutes from './account'
-import categoryRoutes from './category'
+import userRoutes from './userRouter'
+import dashboardRoutes from './dashboardRouter'
+import authRoutes from './authRouter'
+import accountRoutes from './accountRouter'
+import categoryRoutes from './categoryRouter'
 
 const routes: RouteRecordRaw[] = [
   ...authRoutes,

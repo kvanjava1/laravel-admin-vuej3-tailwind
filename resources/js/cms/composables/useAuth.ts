@@ -2,10 +2,12 @@ import { ref } from 'vue'
 import { route } from 'ziggy-js';
 
 import { useAuthStore } from "@/cms/stores/useAuthStore"
+import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
+
 import type { AuthStoreTypes } from '@/cms/types/authstore';
 import type { LoginTypes } from '@/cms/types/auth.d';
 import type { MessageTypes } from "@/cms/types/message.d"
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 
 export const useAuth = () => {
 
@@ -26,14 +28,7 @@ export const useAuth = () => {
             return response.data
         } catch (error: any) {
             loading.value.login = false
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: {
-                    head: 'Error',
-                    detail: [error.message]
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         } finally {
             loading.value.login = false
         }
@@ -44,12 +39,10 @@ export const useAuth = () => {
             if (authStoreData.token) {
                 return true
             }
-
             const authData: string | null = localStorage.getItem("cms_auth");
             if (!authData) {
                 return false
             }
-
             const cmsAuth: AuthStoreTypes = JSON.parse(authData);
             const response: AxiosResponse<MessageTypes> = await axios.get(
                 route('auth.check'),
@@ -59,21 +52,18 @@ export const useAuth = () => {
                     }
                 }
             )
-
             if(response.data.code == "success"){
                 setAuthData(response.data.data)
                 return true
             }else{
                 return false
             }
-            
         } catch (error: any) {
             return false
         }
     }
 
     const logout = (): boolean => {
-
         try {
             deleteAuthData()
             return true
@@ -84,11 +74,8 @@ export const useAuth = () => {
 
     const resetPassword = (email: string) => {
         try {
-
         } catch (error) {
-
         } finally {
-
         }
     };
 

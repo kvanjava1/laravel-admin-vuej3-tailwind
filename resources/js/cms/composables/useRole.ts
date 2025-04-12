@@ -5,7 +5,8 @@ import { useAuthStore } from '@/cms/stores/useAuthStore';
 
 import type { MessageTypes } from '@/cms/types/message.d';
 import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
+import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
 
 export const useRole = () => {
     const { authStoreData } = useAuthStore();
@@ -31,14 +32,7 @@ export const useRole = () => {
             );
             return response.data;
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: {
-                    head: 'Error',
-                    detail: [error.message]
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         }
     }
 
@@ -54,14 +48,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: { 
-                    head: 'Error', 
-                    detail: [error.message] 
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         }
     }
 
@@ -79,14 +66,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: { 
-                    head: 'Error', 
-                    detail: [error.message] 
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         } finally {
             loading.value.saveNewRole = false
         }
@@ -104,14 +84,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: { 
-                    head: 'Error', 
-                    detail: [error.message] 
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         }
     }
 
@@ -129,14 +102,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: { 
-                    head: 'Error', 
-                    detail: [error.message] 
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         } finally {
             loading.value.updateNewRole = false
         }
@@ -155,14 +121,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            const axiosError = error as AxiosError<MessageTypes>;
-            return axiosError.response?.data ?? {
-                code: 'error_unknown',
-                message: { 
-                    head: 'Error', 
-                    detail: [error.message] 
-                }
-            } as MessageTypes
+            return catchErrorHelper(error)
         } finally {
             loading.value.deleteRole = false
         }

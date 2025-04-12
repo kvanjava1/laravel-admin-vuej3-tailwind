@@ -18,7 +18,6 @@ Route::middleware('auth:sanctum')->prefix('/usermanagement')->group(function () 
         Route::put('/{id}/update', [RoleController::class, 'updateRole'])->name('usermanagement.role.update');
         Route::delete('/{id}/delete', [RoleController::class, 'deleteRole'])->name('usermanagement.role.delete');
     });
-
     Route::prefix('/user')->group(function () {
         Route::post('/', [UserController::class, 'addUser'])->name('usermanagement.user.add');
         Route::get('/', [UserController::class, 'getUser'])->name('usermanagement.user');
@@ -26,7 +25,6 @@ Route::middleware('auth:sanctum')->prefix('/usermanagement')->group(function () 
         Route::put('/{id}/update', [UserController::class, 'updateUserDetail'])->name('usermanagement.user.update');
         Route::delete('/{id}/delete', [UserController::class, 'deleteUser'])->name('usermanagement.user.delete');
     });
-
     Route::prefix('/permission')->group(function () {
         Route::get('/', [RoleController::class, 'getPermission'])->name('usermanagement.permission');
     });

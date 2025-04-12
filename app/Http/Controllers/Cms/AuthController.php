@@ -38,17 +38,26 @@ class AuthController extends Controller
 
             $user = User::where('email', $req->email)
                     ->first();
-    
-            if (!$user || !Hash::check($req->password, $user->password)) {
-                throw new Exception('Username or password did not match any record', 400);
+            
+            if (!$user) 
+            {
+                throw new Exception('your account is not found, have you an account?', 400);
+            }
+            
+            if ($user->is_active != 1 ) 
+            {
+                throw new Exception('your account is inactive', 400);
+            }
+            
+            if(!Hash::check($req->password, $user->password)) 
+            {
+                throw new Exception('username or password did not match any record', 400);
             }
             
             $abilities = $user->getAllPermissions()
                         ->pluck('name')
                         ->toArray();
-
             $token = $user->createToken('cms_auth_token', $abilities);
-
             $response = $this->message
                             ->setCode('success')
                             ->setMessageHead('Success login')
@@ -64,7 +73,6 @@ class AuthController extends Controller
             return response()->json(
                 $response, 200
             );
-            
         } catch (ValidationException $e) {
             $response = $this->message
                             ->setCode('error_validation')
