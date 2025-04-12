@@ -6,7 +6,7 @@ import { useAuthStore } from '@/cms/stores/useAuthStore';
 import type { MessageTypes } from '@/cms/types/message.d';
 import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
 import type { AxiosResponse } from 'axios';
-import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
+import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
 
 export const useRole = () => {
     const { authStoreData } = useAuthStore();
@@ -32,7 +32,7 @@ export const useRole = () => {
             );
             return response.data;
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         }
     }
 
@@ -48,7 +48,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         }
     }
 
@@ -66,7 +66,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.saveNewRole = false
         }
@@ -84,7 +84,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         }
     }
 
@@ -102,7 +102,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.updateNewRole = false
         }
@@ -121,7 +121,7 @@ export const useRole = () => {
             )
             return response.data
         } catch (error: any) {
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.deleteRole = false
         }

@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { route } from 'ziggy-js';
 
 import { useAuthStore } from "@/cms/stores/useAuthStore"
-import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
+import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
 
 import type { AuthStoreTypes } from '@/cms/types/authstore';
 import type { LoginTypes } from '@/cms/types/auth.d';
@@ -28,7 +28,7 @@ export const useAuth = () => {
             return response.data
         } catch (error: any) {
             loading.value.login = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.login = false
         }

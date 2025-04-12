@@ -6,7 +6,7 @@ import type { MessageTypes } from '@/cms/types/message';
 import type { AxiosResponse } from 'axios';
 
 import { useAuthStore } from '@/cms/stores/useAuthStore';
-import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
+import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
 
 export const useUser = () => {
     const { authStoreData } = useAuthStore()
@@ -38,7 +38,7 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.getUser = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.getUser = false
         }
@@ -58,7 +58,7 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.getUserDetail = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.getUserDetail = false
         }
@@ -79,7 +79,7 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.addUser = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.addUser = false
         }
@@ -100,7 +100,7 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.updateUser = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.updateUser = false
         }
@@ -120,7 +120,7 @@ export const useUser = () => {
             return response.data
         } catch (error: any) {
             loading.value.deleteUser = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.deleteUser = false
         }

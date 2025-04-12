@@ -6,7 +6,7 @@ import type { AxiosResponse } from 'axios';
 import type { ParamsProfileType } from '@/cms/types/profile';
 
 import { useAuthStore } from '@/cms/stores/useAuthStore';
-import { catchErrorHelper } from '@/cms/helpers/catchErrorHelper';
+import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
 
 export const useProfile = () => {
     const { authStoreData } = useAuthStore()
@@ -32,7 +32,7 @@ export const useProfile = () => {
             return response.data
         } catch (error: any) {
             loading.value.getProfileDetail = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.getProfileDetail = false
         }
@@ -53,7 +53,7 @@ export const useProfile = () => {
             return response.data
         } catch (error: any) {
             loading.value.updateProfile = false
-            return catchErrorHelper(error)
+            return errorCatchHelper(error)
         } finally {
             loading.value.updateProfile = false
         }
