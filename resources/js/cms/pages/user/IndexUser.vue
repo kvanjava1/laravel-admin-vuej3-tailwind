@@ -6,7 +6,7 @@
         <router-link :to="{ 'name': 'usermanagement.user.add' }">
           <Button>
             <PlusIcon class="w-5 h-5" />
-            Add
+            <label>Add</label>
           </Button>
         </router-link>
         <Button color="cyan" @click="showSearchModal = true">
@@ -18,56 +18,56 @@
           <label>Clear Search</label>
         </Button>
       </VerticalMenu>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Email</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Active</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Role</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Created At</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Update At</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(val, key) in availableUser.data">
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{
-                (availableUser?.per_page ?? 0) * (availableUser?.current_page ?? 0) - (availableUser?.per_page ?? 0) +
-                key + 1
-              }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.name }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.email }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <span v-if="val.is_active" class="px-2 inline-flex font-semibold rounded-full bg-green-100 text-green-800 capitalize">active</span>
-                <span v-else class="px-2 inline-flex font-semibold rounded-full bg-red-100 text-red-800 capitalize">inactive</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.roles[0].name }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.created_at }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.updated_at }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <VerticalMenu>
-                  <router-link :to="{ name: 'usermanagement.user.edit', params: { id: val.id } }" v-if="val.roles[0].name != 'superadmin'">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red" @click="clickToDelete(val.id)" v-if="val.roles[0].name != 'superadmin'">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeadItem>No</TableHeadItem>
+            <TableHeadItem>Name</TableHeadItem>
+            <TableHeadItem>Email</TableHeadItem>
+            <TableHeadItem>Active</TableHeadItem>
+            <TableHeadItem>Role</TableHeadItem>
+            <TableHeadItem>Created At</TableHeadItem>
+            <TableHeadItem>Update At</TableHeadItem>
+            <TableHeadItem>Actions</TableHeadItem>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow v-for="(val, key) in availableUser.data">
+            <TableData>{{
+              (availableUser?.per_page ?? 0) * (availableUser?.current_page ?? 0) - (availableUser?.per_page ?? 0) +
+              key + 1
+            }}</TableData>
+            <TableData>{{ val.name }}</TableData>
+            <TableData>{{ val.email }}</TableData>
+            <TableData>
+              <span v-if="val.is_active"
+                class="px-2 inline-flex font-semibold rounded-full bg-green-100 text-green-800 capitalize">active</span>
+              <span v-else
+                class="px-2 inline-flex font-semibold rounded-full bg-red-100 text-red-800 capitalize">inactive</span>
+            </TableData>
+            <TableData>{{ val.roles[0].name }}</TableData>
+            <TableData>{{ val.created_at }}</TableData>
+            <TableData>{{ val.updated_at }}</TableData>
+            <TableData>
+              <VerticalMenu>
+                <router-link :to="{ name: 'usermanagement.user.edit', params: { id: val.id } }"
+                  v-if="val.roles[0].name != 'superadmin'">
+                  <Button color="blue">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Edit</label>
                   </Button>
-                </VerticalMenu>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                </router-link>
+                <Button color="red" @click="clickToDelete(val.id)" v-if="val.roles[0].name != 'superadmin'">
+                  <TrashIcon class="w-5 h-5" />
+                  <label>Delete</label>
+                </Button>
+              </VerticalMenu>
+            </TableData>
+          </TableRow>
+        </TableBody>
+      </Table>
       <Pagination :meta="availableUser ?? { per_page: 0, current_page: 1 }" :method="getAvailableUser" />
     </ContentBox>
-    <!-- search modal -->
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Roles">
         <VForm @submit="searchAvailableUser">
@@ -87,7 +87,8 @@
           <VFormItem>
             <VFormLabel label="Select Role" />
             <VFormSelect v-model="paramsSearchUser.roleId" name="select_role" default-options-label="Select Role Name">
-              <option class="capitalize" v-for="role in searchRole?.data" :value="role.id">{{ role.name }}
+              <option class="capitalize" v-for="role in searchRole?.data" :value="role.id">
+                {{ role.name }}
               </option>
             </VFormSelect>
           </VFormItem>
@@ -116,29 +117,35 @@
 
 <script setup lang="ts">
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue'
 
-import Dashboard from '@/cms/layouts/Dashboard.vue';
-import ContentBox from '@/cms/components/ContentBox.vue';
+import Dashboard from '@/cms/layouts/Dashboard.vue'
+import ContentBox from '@/cms/components/ContentBox.vue'
 
 import Pagination from '@/cms/components/Pagination.vue'
-import Modal from '@/cms/components/Modal.vue';
+import Modal from '@/cms/components/Modal.vue'
 import VerticalMenu from '@/cms/components/VerticalMenu.vue'
 import Button from '@/cms/components/Button.vue'
 import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
-import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
-import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
+import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue'
+import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue'
+import AlertBox from '@/cms/components/AlertBox.vue'
+import Table from '@/cms/components/table/normal/Table.vue'
+import TableHead from '@/cms/components/table/normal/TableHead.vue'
+import TableRow from '@/cms/components/table/normal/TableRow.vue'
+import TableHeadItem from '@/cms/components/table/normal/TableHeadItem.vue'
+import TableBody from '@/cms/components/table/normal/TableBody.vue'
+import TableData from '@/cms/components/table/normal/TableData.vue'
 
-import { useUser } from '@/cms/composables/useUser';
-import { useRole } from '@/cms/composables/useRole';
+import { useUser } from '@/cms/composables/useUser'
+import { useRole } from '@/cms/composables/useRole'
 
-import type { AvailableUserType, ParamsSearchUserType } from '@/cms/types/user';
-import type { MessageTypes } from '@/cms/types/message';
-import type { ParamRoleSearchType } from '@/cms/types/role';
-import AlertBox from '@/cms/components/AlertBox.vue';
+import type { AvailableUserType, ParamsSearchUserType } from '@/cms/types/user'
+import type { MessageTypes } from '@/cms/types/message'
+import type { ParamRoleSearchType } from '@/cms/types/role'
 
 const { getUser, deleteUser } = useUser()
 const { getAllRole } = useRole()

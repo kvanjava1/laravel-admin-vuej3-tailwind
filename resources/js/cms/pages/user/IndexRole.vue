@@ -18,49 +18,46 @@
           <label>Clear Search</label>
         </Button>
       </VerticalMenu>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">No</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Name</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Created At</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Update At</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(val, key) in availableRoles?.data">
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                {{ (availableRoles?.per_page ?? 0) * (availableRoles?.current_page ?? 0) - (availableRoles?.per_page
-                  ??
-                  0) + key + 1 }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.name }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.created_at }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.updated_at }}</td>
-              <td class="px-6 py-4 whitespace-nowrap flex gap-2">
-                <VerticalMenu>
-                  <router-link :to="{ name: 'usermanagement.role.edit', params: { id: val.id } }"
-                    v-if="val.name != 'superadmin'">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red" @click="clickToDeleteRole(val.id)" v-if="val.name != 'superadmin'">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeadItem>No</TableHeadItem>
+            <TableHeadItem>Name</TableHeadItem>
+            <TableHeadItem>Created At</TableHeadItem>
+            <TableHeadItem>Update At</TableHeadItem>
+            <TableHeadItem>Actions</TableHeadItem>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow v-for="(val, key) in availableRoles?.data">
+            <TableData>
+              {{ (availableRoles?.per_page ?? 0) * (availableRoles?.current_page ?? 0) - (availableRoles?.per_page
+                ??
+                0) + key + 1 }}
+            </TableData>
+            <TableData>{{ val.name }}</TableData>
+            <TableData>{{ val.created_at }}</TableData>
+            <TableData>{{ val.updated_at }}</TableData>
+            <TableData>
+              <VerticalMenu>
+                <router-link :to="{ name: 'usermanagement.role.edit', params: { id: val.id } }"
+                  v-if="val.name != 'superadmin'">
+                  <Button color="blue">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Edit</label>
                   </Button>
-                </VerticalMenu>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                </router-link>
+                <Button color="red" @click="clickToDeleteRole(val.id)" v-if="val.name != 'superadmin'">
+                  <TrashIcon class="w-5 h-5" />
+                  <label>Delete</label>
+                </Button>
+              </VerticalMenu>
+            </TableData>
+          </TableRow>
+        </TableBody>
+      </Table>
       <Pagination :meta="availableRoles ?? { per_page: 0, current_page: 1 }" :method="getAvailableRoles" />
     </ContentBox>
-    <!-- search modal -->
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Roles">
         <VForm @submit="searchAvailableRoles">
@@ -103,6 +100,12 @@ import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
+import Table from '@/cms/components/table/normal/Table.vue'
+import TableHead from '@/cms/components/table/normal/TableHead.vue'
+import TableRow from '@/cms/components/table/normal/TableRow.vue'
+import TableHeadItem from '@/cms/components/table/normal/TableHeadItem.vue'
+import TableBody from '@/cms/components/table/normal/TableBody.vue'
+import TableData from '@/cms/components/table/normal/TableData.vue'
 
 // composable
 import { useRole } from '@/cms/composables/useRole'

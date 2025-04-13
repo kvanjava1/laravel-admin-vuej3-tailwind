@@ -18,121 +18,112 @@
           <label>Clear Search</label>
         </Button>
       </VerticalMenu>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
-                Name</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
-                Slug</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
-                Status</th>
-              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
-                Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <!-- Parent Category -->
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <div class="flex items-center">
-                  <div class="font-medium text-gray-900">Technology</div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeadItem>Name</TableHeadItem>
+            <TableHeadItem>Slug</TableHeadItem>
+            <TableHeadItem>Status</TableHeadItem>
+            <TableHeadItem>Actions</TableHeadItem>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableData>
+              <div class="flex items-center">
+                <div class="font-medium text-gray-900">Technology</div>
+              </div>
+            </TableData>
+            <TableData>technology</TableData>
+            <TableData>
+              <span class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                Active
+              </span>
+            </TableData>
+            <TableData>
+              <VerticalMenu>
+                <Button>
+                  <PlusIcon class="w-5 h-5" />
+                  <label>Add</label>
+                </Button>
+                <router-link to="">
+                  <Button color="blue">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Edit</label>
+                  </Button>
+                </router-link>
+                <Button color="red">
+                  <TrashIcon class="w-5 h-5" />
+                  <label>Delete</label>
+                </Button>
+              </VerticalMenu>
+            </TableData>
+          </TableRow>
+          <!-- Child Category - Indented -->
+          <TableRow>
+            <TableData class="px-6 py-4 whitespace-nowrap text-gray-900">
+              <div class="flex items-center">
+                <div class="ml-6 text-gray-900">
+                  Web Development
                 </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">technology</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <span class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  Active
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <VerticalMenu>
-                  <Button>
-                    <PlusIcon class="w-5 h-5" />
-                    <label>Add</label>
+              </div>
+            </TableData>
+            <TableData>web-development</TableData>
+            <TableData>
+              <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+            </TableData>
+            <TableData>
+              <VerticalMenu>
+                <Button>
+                  <PlusIcon class="w-5 h-5" />
+                  <label>Add</label>
+                </Button>
+                <router-link to="">
+                  <Button color="blue">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Edit</label>
                   </Button>
-                  <router-link to="">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
-                  </Button>
-                </VerticalMenu>
-              </td>
-            </tr>
-            <!-- Child Category - Indented -->
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <div class="flex items-center">
-                  <div class="ml-6 text-gray-900">
-                    Web Development
-                  </div>
+                </router-link>
+                <Button color="red">
+                  <TrashIcon class="w-5 h-5" />
+                  <label>Delete</label>
+                </Button>
+              </VerticalMenu>
+            </TableData>
+          </TableRow>
+          <TableRow>
+            <TableData class="px-6 py-4 whitespace-nowrap text-gray-900">
+              <div class="flex items-center">
+                <div class="ml-6 text-gray-900">
+                  Web Development
                 </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">web-development</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <span
-                  class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <VerticalMenu>
-                  <Button>
-                    <PlusIcon class="w-5 h-5" />
-                    <label>Add</label>
+              </div>
+            </TableData>
+            <TableData>web-development</TableData>
+            <TableData>
+              <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+            </TableData>
+            <TableData>
+              <VerticalMenu>
+                <Button>
+                  <PlusIcon class="w-5 h-5" />
+                  <label>Add</label>
+                </Button>
+                <router-link to="">
+                  <Button color="blue">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Edit</label>
                   </Button>
-                  <router-link to="">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
-                  </Button>
-                </VerticalMenu>
-              </td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <div class="flex items-center">
-                  <div class="ml-6 text-gray-900">
-                    Web Development
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">web-development</td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <span
-                  class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
-                <VerticalMenu>
-                  <Button>
-                    <PlusIcon class="w-5 h-5" />
-                    <label>Add</label>
-                  </Button>
-                  <router-link to="">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
-                  </Button>
-                </VerticalMenu>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                </router-link>
+                <Button color="red">
+                  <TrashIcon class="w-5 h-5" />
+                  <label>Delete</label>
+                </Button>
+              </VerticalMenu>
+            </TableData>
+          </TableRow>
+        </TableBody>
+      </Table>
     </ContentBox>
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Category">
@@ -175,6 +166,12 @@ import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
 
 import { ref } from 'vue';
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import Table from '@/cms/components/table/normal/Table.vue';
+import TableHead from '@/cms/components/table/normal/TableHead.vue';
+import TableRow from '@/cms/components/table/normal/TableRow.vue';
+import TableHeadItem from '@/cms/components/table/normal/TableHeadItem.vue';
+import TableBody from '@/cms/components/table/normal/TableBody.vue';
+import TableData from '@/cms/components/table/normal/TableData.vue';
 
 const message = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
