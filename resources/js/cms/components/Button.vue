@@ -12,7 +12,7 @@ const props = withDefaults(
 
 const buttonClasses = [
     props.color === 'red' ? 'bg-red-600 hover:bg-red-700' : 
-    props.color === 'blue' ? 'bg-blue-600 hover:bg-blue-700' :
+    props.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
     props.color === 'gray' ? 'bg-gray-600 hover:bg-gray-700' :
     props.color === 'cyan' ? 'bg-cyan-600 hover:bg-cyan-700' : // Changed 'grey' → 'gray'
     'bg-green-600 hover:bg-green-700',

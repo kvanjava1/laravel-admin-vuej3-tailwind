@@ -49,9 +49,8 @@
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ val.updated_at }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <VerticalMenu>
-                  <router-link :to="{ name: 'usermanagement.user.edit', params: { id: val.id } }"
-                    v-if="val.roles[0].name != 'superadmin'">
-                    <Button>
+                  <router-link :to="{ name: 'usermanagement.user.edit', params: { id: val.id } }" v-if="val.roles[0].name != 'superadmin'">
+                    <Button color="blue">
                       <PencilIcon class="w-5 h-5" />
                       <label>Edit</label>
                     </Button>
@@ -103,7 +102,7 @@
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button>
+              <Button color="cyan">
                 <MagnifyingGlassIcon class="w-5 h-5" />
                 <label>Search</label>
               </Button>

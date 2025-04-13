@@ -43,7 +43,7 @@
                 <VerticalMenu>
                   <router-link :to="{ name: 'usermanagement.role.edit', params: { id: val.id } }"
                     v-if="val.name != 'superadmin'">
-                    <Button>
+                    <Button color="blue">
                       <PencilIcon class="w-5 h-5" />
                       <label>Edit</label>
                     </Button>
@@ -74,7 +74,7 @@
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button>
+              <Button color="cyan">
                 <MagnifyingGlassIcon class="w-5 h-5" />
                 <label>Search</label>
               </Button>

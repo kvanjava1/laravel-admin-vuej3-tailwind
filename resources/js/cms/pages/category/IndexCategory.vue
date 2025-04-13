@@ -22,33 +22,38 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left  text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
                 Name</th>
-              <th scope="col" class="px-6 py-3 text-left  text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
                 Slug</th>
-              <th scope="col" class="px-6 py-3 text-left  text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
                 Status</th>
-              <th scope="col" class="px-6 py-3 text-left  text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-gray-500 tracking-wider">
                 Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <!-- Parent Category -->
             <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <div class="flex items-center">
-                  <div class=" font-medium text-gray-900">Technology</div>
+                  <div class="font-medium text-gray-900">Technology</div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  text-gray-500">technology</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">technology</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
+                <span class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  font-medium">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <VerticalMenu>
+                  <Button>
+                    <PlusIcon class="w-5 h-5" />
+                    <label>Add</label>
+                  </Button>
                   <router-link to="">
-                    <Button>
+                    <Button color="blue">
                       <PencilIcon class="w-5 h-5" />
                       <label>Edit</label>
                     </Button>
@@ -61,23 +66,27 @@
               </td>
             </tr>
             <!-- Child Category - Indented -->
-            <tr class="bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <div class="flex items-center">
-                  <div class="ml-6  font-medium text-gray-900">
-                    <i class="fas fa-level-down-alt rotate-90 mr-2 text-gray-400"></i>Web Development
+                  <div class="ml-6 text-gray-900">
+                    Web Development
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  text-gray-500">web-development</td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">web-development</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <span
-                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  font-medium">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <VerticalMenu>
+                  <Button>
+                    <PlusIcon class="w-5 h-5" />
+                    <label>Add</label>
+                  </Button>
                   <router-link to="">
-                    <Button>
+                    <Button color="blue">
                       <PencilIcon class="w-5 h-5" />
                       <label>Edit</label>
                     </Button>
@@ -89,24 +98,27 @@
                 </VerticalMenu>
               </td>
             </tr>
-            <!-- Another Child Category -->
-            <tr class="bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap">
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <div class="flex items-center">
-                  <div class="ml-6  font-medium text-gray-900">
-                    <i class="fas fa-level-down-alt rotate-90 mr-2 text-gray-400"></i>Mobile Development
+                  <div class="ml-6 text-gray-900">
+                    Web Development
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  text-gray-500">mobile-development</td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">web-development</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <span
                   class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap  font-medium">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-900">
                 <VerticalMenu>
+                  <Button>
+                    <PlusIcon class="w-5 h-5" />
+                    <label>Add</label>
+                  </Button>
                   <router-link to="">
-                    <Button>
+                    <Button color="blue">
                       <PencilIcon class="w-5 h-5" />
                       <label>Edit</label>
                     </Button>
@@ -135,7 +147,7 @@
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button>
+              <Button color="cyan">
                 <MagnifyingGlassIcon class="w-5 h-5" />
                 <label>Search</label>
               </Button>
