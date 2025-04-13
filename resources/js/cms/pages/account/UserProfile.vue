@@ -1,5 +1,5 @@
 <template>
-    <Dashboard title="User" breadcrumb="Index">
+    <Dashboard title="User" breadcrumb="My Account / Profile">
       <div>
         <h1 class="text-3xl font-bold text-gray-800">User</h1>
         <p class="mt-4 text-gray-600">Welcome to the user!</p>

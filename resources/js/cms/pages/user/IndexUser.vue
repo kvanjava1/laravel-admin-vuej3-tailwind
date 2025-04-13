@@ -1,5 +1,5 @@
 <template>
-  <Dashboard title="Manage Users" breadcrumb="Index">
+  <Dashboard title="Manage Users" breadcrumb="User Management / User">
     <AlertBox :message="message" />
     <ContentBox title="User Lists">
       <VerticalMenu>

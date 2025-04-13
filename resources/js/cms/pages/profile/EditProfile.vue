@@ -1,5 +1,5 @@
 <template>
-    <Dashboard title="My Profile" breadcrumb="Edit Profile">
+    <Dashboard title="My Profile" breadcrumb="My Account / Profile">
         <AlertBox :message="message" />
         <ContentBox title="Profile Information">
             <VForm @submit="clickToUpdateProfile">

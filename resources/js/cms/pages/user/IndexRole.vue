@@ -1,5 +1,5 @@
 <template>
-  <Dashboard title="Manage Roles" breadcrumb="Index">
+  <Dashboard title="Manage Roles" breadcrumb="User Management / Role">
     <AlertBox :message="message" />
     <ContentBox title="Roles List">
       <VerticalMenu>

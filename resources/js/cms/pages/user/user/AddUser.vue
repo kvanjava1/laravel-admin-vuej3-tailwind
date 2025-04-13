@@ -1,5 +1,5 @@
 <template>
-    <Dashboard title="Manage Users" breadcrumb="Add User">
+    <Dashboard title="Manage Users" breadcrumb="User Management / User / Add">
         <AlertBox :message="message" />
         <ContentBox title="Add User">
             <VForm @submit="clickToSaveAddUser">

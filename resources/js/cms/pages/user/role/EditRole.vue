@@ -1,5 +1,5 @@
 <template>
-  <Dashboard title="Manage Roles" breadcrumb="Edit Role">
+  <Dashboard title="Manage Roles" breadcrumb="User Management / Role / Edit">
     <AlertBox :message="message" />
     <ContentBox title="Edit Role">
       <VForm @submit="clickToUpdateRole">
