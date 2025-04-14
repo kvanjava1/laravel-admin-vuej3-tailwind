@@ -16,7 +16,7 @@ class RoleController extends Controller
 {
     protected Message $message;
     protected LogService $logService;
-
+    
     function __construct(Message $message, LogService $logService)
     {
         $this->message = $message;
@@ -135,9 +135,7 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         } catch (Exception $e) {
-
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -195,9 +193,7 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         } catch (ValidationException $e) {
-
             $this->logService
                 ->setRequest($req)
                 ->setValidationException($e)
@@ -210,7 +206,6 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 400);
-
         } catch (Exception $e) {
             $this->logService
                 ->setRequest($req)
@@ -366,9 +361,7 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         } catch (Exception $e) {
-
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -380,7 +373,6 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 200);
-
         }
     }
 }
