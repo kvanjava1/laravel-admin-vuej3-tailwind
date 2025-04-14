@@ -19,12 +19,12 @@
           </router-link>
         </VFormItem>
         <VFormItem>
-          <VerticalMenu>
+          <VMenu>
             <Button :disabled="loading.login" class="w-full">
               <ArrowRightOnRectangleIcon class="w-5 h-5" />
               Login
             </Button>
-          </VerticalMenu>
+          </VMenu>
         </VFormItem>
       </VForm>
     </div>
@@ -45,7 +45,7 @@ import VForm from '@/cms/components/form/vertical/VForm.vue';
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue';
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue';
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue';
-import VerticalMenu from '@/cms/components/VerticalMenu.vue';
+import VMenu from '@/cms/components/VMenu.vue';
 import Button from '@/cms/components/Button.vue';
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/20/solid';
 

@@ -2,7 +2,7 @@
     <Dashboard title="Category" breadcrumb="index">
         <AlertBox :message="message" />
         <ContentBox title="Add Category">
-            <VerticalMenu>
+            <VMenu>
                 <router-link :to="{ 'name': 'category.add' }">
                     <Button>
                         <PlusIcon class="w-5 h-5" />
@@ -17,7 +17,7 @@
                     <XMarkIcon class="w-5 h-5" />
                     <label>Clear Search</label>
                 </Button>
-            </VerticalMenu>
+            </VMenu>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100">
@@ -43,7 +43,7 @@
                             placeholder="Enter category name" />
                     </VFormItem>
                     <VFormItem>
-                        <VerticalMenu>
+                        <VMenu>
                             <Button color="gray" @click.prevent="showSearchModal = false">
                                 <XMarkIcon class="w-5 h-5" />
                                 <label>Cancel</label>
@@ -52,7 +52,7 @@
                                 <MagnifyingGlassIcon class="w-5 h-5" />
                                 <label>Search</label>
                             </Button>
-                        </VerticalMenu>
+                        </VMenu>
                     </VFormItem>
                 </VForm>
             </ContentBox>
@@ -67,7 +67,7 @@ import Dashboard from '@/cms/layouts/Dashboard.vue';
 import ContentBox from '@/cms/components/ContentBox.vue';
 import Button from '@/cms/components/Button.vue';
 import AlertBox from '@/cms/components/AlertBox.vue';
-import VerticalMenu from '@/cms/components/VerticalMenu.vue';
+import VMenu from '@/cms/components/VMenu.vue';
 import Modal from '@/cms/components/Modal.vue'
 import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'

@@ -23,7 +23,7 @@
           </div>
         </VFormItem>
         <VFormItem>
-          <VerticalMenu>
+          <VMenu>
             <RouterLink :to="{ name: 'usermanagement.role.index' }">
               <Button color="gray">
                 <XMarkIcon class="w-5 h-5" />
@@ -38,7 +38,7 @@
                 Save
               </label>
             </Button>
-          </VerticalMenu>
+          </VMenu>
         </VFormItem>
       </VForm>
     </ContentBox>
@@ -53,7 +53,7 @@ import { XMarkIcon, PencilIcon } from '@heroicons/vue/24/outline';
 import ContentBox from '@/cms/components/ContentBox.vue'
 import Dashboard from '@/cms/layouts/Dashboard.vue'
 import AlertBox from '@/cms/components/AlertBox.vue'
-import VerticalMenu from '@/cms/components/VerticalMenu.vue';
+import VMenu from '@/cms/components/VMenu.vue';
 import Button from '@/cms/components/Button.vue';
 import VForm from '@/cms/components/form/vertical/VForm.vue';
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue';

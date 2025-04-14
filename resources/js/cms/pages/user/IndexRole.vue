@@ -2,7 +2,7 @@
   <Dashboard title="Manage Roles" breadcrumb="User Management / Role">
     <AlertBox :message="message" />
     <ContentBox title="Roles List">
-      <VerticalMenu>
+      <VMenu>
         <router-link :to="{ 'name': 'usermanagement.role.add' }">
           <Button>
             <PlusIcon class="w-5 h-5" />
@@ -17,29 +17,29 @@
           <XMarkIcon class="w-5 h-5" />
           <label>Clear Search</label>
         </Button>
-      </VerticalMenu>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeadItem>No</TableHeadItem>
-            <TableHeadItem>Name</TableHeadItem>
-            <TableHeadItem>Created At</TableHeadItem>
-            <TableHeadItem>Update At</TableHeadItem>
-            <TableHeadItem>Actions</TableHeadItem>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow v-for="(val, key) in availableRoles?.data">
-            <TableData>
+      </VMenu>
+      <NTable>
+        <NTableHead>
+          <NTableRow>
+            <NTableHeadItem>No</NTableHeadItem>
+            <NTableHeadItem>Name</NTableHeadItem>
+            <NTableHeadItem>Created At</NTableHeadItem>
+            <NTableHeadItem>Update At</NTableHeadItem>
+            <NTableHeadItem>Actions</NTableHeadItem>
+          </NTableRow>
+        </NTableHead>
+        <NTableBody>
+          <NTableRow v-for="(val, key) in availableRoles?.data">
+            <NTableData>
               {{ (availableRoles?.per_page ?? 0) * (availableRoles?.current_page ?? 0) - (availableRoles?.per_page
                 ??
                 0) + key + 1 }}
-            </TableData>
-            <TableData>{{ val.name }}</TableData>
-            <TableData>{{ val.created_at }}</TableData>
-            <TableData>{{ val.updated_at }}</TableData>
-            <TableData>
-              <VerticalMenu>
+            </NTableData>
+            <NTableData>{{ val.name }}</NTableData>
+            <NTableData>{{ val.created_at }}</NTableData>
+            <NTableData>{{ val.updated_at }}</NTableData>
+            <NTableData>
+              <VMenu>
                 <router-link :to="{ name: 'usermanagement.role.edit', params: { id: val.id } }"
                   v-if="val.name != 'superadmin'">
                   <Button color="blue">
@@ -51,11 +51,11 @@
                   <TrashIcon class="w-5 h-5" />
                   <label>Delete</label>
                 </Button>
-              </VerticalMenu>
-            </TableData>
-          </TableRow>
-        </TableBody>
-      </Table>
+              </VMenu>
+            </NTableData>
+          </NTableRow>
+        </NTableBody>
+      </NTable>
       <Pagination :meta="availableRoles ?? { per_page: 0, current_page: 1 }" :method="getAvailableRoles" />
     </ContentBox>
     <Modal v-show="showSearchModal">
@@ -66,7 +66,7 @@
             <VFormInput v-model="paramSearchRole.name" type="text" name="role_name" placeholder="Enter role name" />
           </VFormItem>
           <VFormItem>
-            <VerticalMenu>
+            <VMenu>
               <Button color="gray" @click.prevent="showSearchModal = false">
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
@@ -75,7 +75,7 @@
                 <MagnifyingGlassIcon class="w-5 h-5" />
                 <label>Search</label>
               </Button>
-            </VerticalMenu>
+            </VMenu>
           </VFormItem>
         </VForm>
       </ContentBox>
@@ -94,18 +94,18 @@ import Dashboard from '@/cms/layouts/Dashboard.vue'
 import Modal from '@/cms/components/Modal.vue'
 import AlertBox from '@/cms/components/AlertBox.vue'
 import Pagination from '@/cms/components/Pagination.vue'
-import VerticalMenu from '@/cms/components/VerticalMenu.vue'
+import VMenu from '@/cms/components/VMenu.vue'
 import Button from '@/cms/components/Button.vue'
 import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
-import Table from '@/cms/components/table/normal/Table.vue'
-import TableHead from '@/cms/components/table/normal/TableHead.vue'
-import TableRow from '@/cms/components/table/normal/TableRow.vue'
-import TableHeadItem from '@/cms/components/table/normal/TableHeadItem.vue'
-import TableBody from '@/cms/components/table/normal/TableBody.vue'
-import TableData from '@/cms/components/table/normal/TableData.vue'
+import NTable from '@/cms/components/table/normal/NTable.vue'
+import NTableHead from '@/cms/components/table/normal/NTableHead.vue'
+import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
+import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
+import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
+import NTableData from '@/cms/components/table/normal/NTableData.vue'
 
 // composable
 import { useRole } from '@/cms/composables/useRole'

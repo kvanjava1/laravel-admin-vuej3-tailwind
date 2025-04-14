@@ -26,7 +26,7 @@
           </div>
         </VFormItem>
         <VFormItem>
-          <VerticalMenu>
+          <VMenu>
             <RouterLink :to="{ name: 'usermanagement.role.index' }">
               <Button color="gray">
                 <XMarkIcon class="w-5 h-5" />
@@ -41,7 +41,7 @@
                 Save
               </label>
             </Button>
-          </VerticalMenu>
+          </VMenu>
         </VFormItem>
       </VForm>
     </ContentBox>
@@ -68,7 +68,7 @@ import { useRole } from '@/cms/composables/useRole'
 // types
 import type { GroupedPermissionsType, ParamCreateRoleType } from '@/cms/types/role';
 import type { MessageTypes } from '@/cms/types/message';
-import VerticalMenu from '@/cms/components/VerticalMenu.vue';
+import VMenu from '@/cms/components/VMenu.vue';
 import Button from '@/cms/components/Button.vue';
 
 const message = ref<MessageTypes>({} as MessageTypes)

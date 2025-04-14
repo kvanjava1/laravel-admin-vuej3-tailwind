@@ -2,7 +2,7 @@
   <Dashboard title="Category" breadcrumb="index">
     <AlertBox :message="message" />
     <ContentBox title="Add Category">
-      <VerticalMenu>
+      <VMenu>
         <router-link :to="{ 'name': 'category.add' }">
           <Button>
             <PlusIcon class="w-5 h-5" />
@@ -17,31 +17,31 @@
           <XMarkIcon class="w-5 h-5" />
           <label>Clear Search</label>
         </Button>
-      </VerticalMenu>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeadItem>Name</TableHeadItem>
-            <TableHeadItem>Slug</TableHeadItem>
-            <TableHeadItem>Status</TableHeadItem>
-            <TableHeadItem>Actions</TableHeadItem>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableData>
+      </VMenu>
+      <NTable>
+        <NTableHead>
+          <NTableRow>
+            <NTableHeadItem>Name</NTableHeadItem>
+            <NTableHeadItem>Slug</NTableHeadItem>
+            <NTableHeadItem>Status</NTableHeadItem>
+            <NTableHeadItem>Actions</NTableHeadItem>
+          </NTableRow>
+        </NTableHead>
+        <NTableBody>
+          <NTableRow>
+            <NTableData>
               <div class="flex items-center">
                 <div class="font-medium text-gray-900">Technology</div>
               </div>
-            </TableData>
-            <TableData>technology</TableData>
-            <TableData>
+            </NTableData>
+            <NTableData>technology</NTableData>
+            <NTableData>
               <span class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 Active
               </span>
-            </TableData>
-            <TableData>
-              <VerticalMenu>
+            </NTableData>
+            <NTableData>
+              <VMenu>
                 <Button>
                   <PlusIcon class="w-5 h-5" />
                   <label>Add</label>
@@ -56,24 +56,24 @@
                   <TrashIcon class="w-5 h-5" />
                   <label>Delete</label>
                 </Button>
-              </VerticalMenu>
-            </TableData>
-          </TableRow>
+              </VMenu>
+            </NTableData>
+          </NTableRow>
           <!-- Child Category - Indented -->
-          <TableRow>
-            <TableData class="px-6 py-4 whitespace-nowrap text-gray-900">
+          <NTableRow>
+            <NTableData class="px-6 py-4 whitespace-nowrap text-gray-900">
               <div class="flex items-center">
                 <div class="ml-6 text-gray-900">
                   Web Development
                 </div>
               </div>
-            </TableData>
-            <TableData>web-development</TableData>
-            <TableData>
+            </NTableData>
+            <NTableData>web-development</NTableData>
+            <NTableData>
               <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-            </TableData>
-            <TableData>
-              <VerticalMenu>
+            </NTableData>
+            <NTableData>
+              <VMenu>
                 <Button>
                   <PlusIcon class="w-5 h-5" />
                   <label>Add</label>
@@ -88,23 +88,23 @@
                   <TrashIcon class="w-5 h-5" />
                   <label>Delete</label>
                 </Button>
-              </VerticalMenu>
-            </TableData>
-          </TableRow>
-          <TableRow>
-            <TableData class="px-6 py-4 whitespace-nowrap text-gray-900">
+              </VMenu>
+            </NTableData>
+          </NTableRow>
+          <NTableRow>
+            <NTableData class="px-6 py-4 whitespace-nowrap text-gray-900">
               <div class="flex items-center">
                 <div class="ml-6 text-gray-900">
                   Web Development
                 </div>
               </div>
-            </TableData>
-            <TableData>web-development</TableData>
-            <TableData>
+            </NTableData>
+            <NTableData>web-development</NTableData>
+            <NTableData>
               <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-            </TableData>
-            <TableData>
-              <VerticalMenu>
+            </NTableData>
+            <NTableData>
+              <VMenu>
                 <Button>
                   <PlusIcon class="w-5 h-5" />
                   <label>Add</label>
@@ -119,11 +119,11 @@
                   <TrashIcon class="w-5 h-5" />
                   <label>Delete</label>
                 </Button>
-              </VerticalMenu>
-            </TableData>
-          </TableRow>
-        </TableBody>
-      </Table>
+              </VMenu>
+            </NTableData>
+          </NTableRow>
+        </NTableBody>
+      </NTable>
     </ContentBox>
     <Modal v-show="showSearchModal">
       <ContentBox title="Search Category">
@@ -133,7 +133,7 @@
             <VFormInput type="text" name="category" placeholder="Enter category name" />
           </VFormItem>
           <VFormItem>
-            <VerticalMenu>
+            <VMenu>
               <Button color="gray" @click.prevent="showSearchModal = false">
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
@@ -142,7 +142,7 @@
                 <MagnifyingGlassIcon class="w-5 h-5" />
                 <label>Search</label>
               </Button>
-            </VerticalMenu>
+            </VMenu>
           </VFormItem>
         </VForm>
       </ContentBox>
@@ -157,7 +157,7 @@ import Dashboard from '@/cms/layouts/Dashboard.vue';
 import ContentBox from '@/cms/components/ContentBox.vue';
 import Button from '@/cms/components/Button.vue';
 import AlertBox from '@/cms/components/AlertBox.vue';
-import VerticalMenu from '@/cms/components/VerticalMenu.vue';
+import VMenu from '@/cms/components/VMenu.vue';
 import Modal from '@/cms/components/Modal.vue'
 import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
@@ -166,12 +166,12 @@ import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
 
 import { ref } from 'vue';
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import Table from '@/cms/components/table/normal/Table.vue';
-import TableHead from '@/cms/components/table/normal/TableHead.vue';
-import TableRow from '@/cms/components/table/normal/TableRow.vue';
-import TableHeadItem from '@/cms/components/table/normal/TableHeadItem.vue';
-import TableBody from '@/cms/components/table/normal/TableBody.vue';
-import TableData from '@/cms/components/table/normal/TableData.vue';
+import NTable from '@/cms/components/table/normal/NTable.vue'
+import NTableHead from '@/cms/components/table/normal/NTableHead.vue'
+import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
+import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
+import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
+import NTableData from '@/cms/components/table/normal/NTableData.vue'
 
 const message = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
