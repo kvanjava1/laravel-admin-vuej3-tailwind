@@ -3,12 +3,10 @@
     <AlertBox :message="message" />
     <ContentBox title="Add Category">
       <VMenu>
-        <router-link :to="{ 'name': 'category.add' }">
-          <Button>
-            <PlusIcon class="w-5 h-5" />
-            <label>Add</label>
-          </Button>
-        </router-link>
+        <Button @click="clickToShowAddCategory(true)">
+          <PlusIcon class="w-5 h-5" />
+          <label>Add</label>
+        </Button>
         <Button color="cyan" @click="showSearchModal = true">
           <MagnifyingGlassIcon class="w-5 h-5" />
           <label>Search</label>
@@ -70,7 +68,8 @@
             </NTableData>
             <NTableData>web-development</NTableData>
             <NTableData>
-              <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+              <span
+                class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
             </NTableData>
             <NTableData>
               <VMenu>
@@ -101,7 +100,8 @@
             </NTableData>
             <NTableData>web-development</NTableData>
             <NTableData>
-              <span class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+              <span
+                class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
             </NTableData>
             <NTableData>
               <VMenu>
@@ -147,11 +147,42 @@
         </VForm>
       </ContentBox>
     </Modal>
+    <Modal v-show="showAddCategory">
+      <ContentBox title="Add Category">
+        <VForm>
+          <VFormItem>
+            <VFormLabel label="Category Type" />
+            <VFormSelect v-model="paramsCategory.categoryType" default-options-label="Select Category Type" name="select_catgory_type">
+              <option value="top_category">Top Category</option>
+              <option value="child_category">Child Category</option>
+            </VFormSelect>
+          </VFormItem>
+          <VFormItem v-if="paramsCategory.categoryType == 'child_category'">
+            <VFormLabel label="Select Parent" />
+            <VFormSelect default-options-label="Select Parent" name="select_catgory_type">
+            </VFormSelect>
+          </VFormItem>
+          <VFormItem>
+            <VMenu>
+              <Button color="gray" @click="clickToShowAddCategory(false)">
+                <PlusIcon class="w-5 h-5" />
+                <label>Cancel</label>
+              </Button>
+              <Button>
+                <PlusIcon class="w-5 h-5" />
+                <label>Add</label>
+              </Button>
+            </VMenu>
+          </VFormItem>
+        </VForm>
+      </ContentBox>
+    </Modal>
   </Dashboard>
 </template>
 
 <script setup lang="ts">
 import type { MessageTypes } from '@/cms/types/message';
+import type { ParamsCategoryType } from '@/cms/types/category';
 
 import Dashboard from '@/cms/layouts/Dashboard.vue';
 import ContentBox from '@/cms/components/ContentBox.vue';
@@ -163,9 +194,7 @@ import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
-
-import { ref } from 'vue';
-import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
 import NTable from '@/cms/components/table/normal/NTable.vue'
 import NTableHead from '@/cms/components/table/normal/NTableHead.vue'
 import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
@@ -173,8 +202,19 @@ import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
 import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
 import NTableData from '@/cms/components/table/normal/NTableData.vue'
 
+import { ref } from 'vue';
+import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 const message = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
+const showAddCategory = ref<boolean>(false)
+const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
+const clickToShowAddCategory = (show: boolean): void => {
+  if(show){
+    paramsCategory.value = {} as ParamsCategoryType
+  }
+  showAddCategory.value = show
+}
 const clearSearch = (): void => { }
 </script>

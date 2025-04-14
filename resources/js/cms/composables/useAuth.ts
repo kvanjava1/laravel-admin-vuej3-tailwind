@@ -10,7 +10,6 @@ import type { MessageTypes } from "@/cms/types/message.d"
 import type { AxiosResponse } from 'axios';
 
 export const useAuth = () => {
-
     const { authStoreData, setAuthData, deleteAuthData } = useAuthStore()
     const loading = ref<{ login: boolean }>({
         login: false

@@ -8,14 +8,9 @@ const routes: RouteRecordRaw[] = [
     children: [
         {
             path: 'index',
-            name: 'category.index',
+            name: 'categorymanagement.index',
             component: () => import('@/cms/pages/category/IndexCategory.vue'),
-        },
-        {
-            path: 'add',
-            name: 'category.add',
-            component: () => import('@/cms/pages/category/IndexCategory.vue'),
-        },
+        }
     ],
   },
 ];

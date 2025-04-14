@@ -9,9 +9,15 @@
     <nav>
       <ul>
         <li class="mb-3">
-          <router-link to="/" class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded transition-all">
+          <router-link :to="{name: 'dashboard.index'}" class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded transition-all">
             <Bars3Icon class="w-5 h-5 mr-3" />
             <span>Dashboard</span>
+          </router-link>
+        </li>
+        <li class="mb-3">
+          <router-link :to="{ name: 'categorymanagement.index'}" class="flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded transition-all">
+            <Bars3Icon class="w-5 h-5 mr-3" />
+            <span>Category Management</span>
           </router-link>
         </li>
         <li class="mb-3">

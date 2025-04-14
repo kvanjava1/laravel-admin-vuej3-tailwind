@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: [authCheck],
     children: [
       {
-        path: '',
+        path: '/index',
         name: 'dashboard.index',
         component: () => import('@/cms/pages/dashboard/IndexDashboard.vue')
       }
