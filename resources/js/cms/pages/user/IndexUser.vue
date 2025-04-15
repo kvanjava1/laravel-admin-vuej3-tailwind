@@ -1,7 +1,9 @@
 <template>
   <Dashboard title="Manage Users" breadcrumb="User Management / User">
-    <AlertBox :message="message" />
     <ContentBox title="User Lists">
+      <template #top>
+        <AlertBox :message="message" />
+      </template>
       <VMenu>
         <router-link :to="{ 'name': 'usermanagement.user.add' }">
           <Button>

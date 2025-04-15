@@ -1,7 +1,9 @@
 <template>
   <Dashboard title="Manage Roles" breadcrumb="User Management / Role">
-    <AlertBox :message="message" />
     <ContentBox title="Roles List">
+      <template #top>
+        <AlertBox :message="message" />
+      </template>
       <VMenu>
         <router-link :to="{ 'name': 'usermanagement.role.add' }">
           <Button>

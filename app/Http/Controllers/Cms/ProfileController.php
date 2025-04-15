@@ -15,7 +15,7 @@ class ProfileController extends Controller
 {
     protected LogService $logService;
     protected Message $message;
-
+    
     function __construct(LogService $logService, Message $message)
     {
         $this->message = $message;

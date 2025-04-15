@@ -3,7 +3,7 @@
     <AlertBox :message="message" />
     <ContentBox title="Add Category">
       <VMenu>
-        <Button @click="clickToShowAddCategory(true)">
+        <Button @click="clickToShowAddCategory({ show: true })">
           <PlusIcon class="w-5 h-5" />
           <label>Add</label>
         </Button>
@@ -149,26 +149,26 @@
     </Modal>
     <Modal v-show="showAddCategory">
       <ContentBox title="Add Category">
+        <template #top>
+          <AlertBox :message="messageAddCategory"/>
+        </template>
         <VForm>
           <VFormItem>
-            <VFormLabel label="Category Type" />
-            <VFormSelect v-model="paramsCategory.categoryType" default-options-label="Select Category Type" name="select_catgory_type">
-              <option value="top_category">Top Category</option>
-              <option value="child_category">Child Category</option>
-            </VFormSelect>
+            <VFormLabel label="Category Name" />
+            <VFormInput v-model="paramsCategory.name" type="text" name="category" placeholder="Enter category name" />
           </VFormItem>
-          <VFormItem v-if="paramsCategory.categoryType == 'child_category'">
-            <VFormLabel label="Select Parent" />
-            <VFormSelect default-options-label="Select Parent" name="select_catgory_type">
-            </VFormSelect>
+          <VFormItem>
+            <VFormLabel label="Active Status" />
+            <VFormRadio v-model="paramsCategory.isActive" name="is_active" radio-value="1" label="Yes" />
+            <VFormRadio v-model="paramsCategory.isActive" name="is_active" radio-value="0" label="No" />
           </VFormItem>
           <VFormItem>
             <VMenu>
-              <Button color="gray" @click="clickToShowAddCategory(false)">
-                <PlusIcon class="w-5 h-5" />
+              <Button color="gray" @click="clickToShowAddCategory({ show: false })">
+                <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button>
+              <Button @click="clickToAddCategory({type: 'parent_category'})" :disabled="loading.addCategory">
                 <PlusIcon class="w-5 h-5" />
                 <label>Add</label>
               </Button>
@@ -194,27 +194,35 @@ import VForm from '@/cms/components/form/vertical/VForm.vue'
 import VFormItem from '@/cms/components/form/vertical/VFormItem.vue'
 import VFormLabel from '@/cms/components/form/vertical/VFormLabel.vue'
 import VFormInput from '@/cms/components/form/vertical/VFormInput.vue'
-import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
 import NTable from '@/cms/components/table/normal/NTable.vue'
 import NTableHead from '@/cms/components/table/normal/NTableHead.vue'
 import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
 import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
 import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
 import NTableData from '@/cms/components/table/normal/NTableData.vue'
+import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 
 import { ref } from 'vue';
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
+import { useCategory } from '@/cms/composables/useCategory';
+
 const message = ref<MessageTypes>({} as MessageTypes)
+const messageAddCategory = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
-const clickToShowAddCategory = (show: boolean): void => {
-  if(show){
+const { addCategory, loading } = useCategory()
+const clickToShowAddCategory = (params: { show: boolean, parent?: object }): void => {
+  if (params.show) {
     paramsCategory.value = {} as ParamsCategoryType
   }
-  showAddCategory.value = show
+  showAddCategory.value = params.show
 }
-const clearSearch = (): void => { }
+const clickToAddCategory = async (params: { type: typeof paramsCategory.value.categoryType }): Promise<void> => {
+  paramsCategory.value.categoryType = params.type
+  messageAddCategory.value = await addCategory(paramsCategory.value)
+}
+const clearSearch = (): void => {}
 </script>

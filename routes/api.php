@@ -4,10 +4,15 @@ use App\Http\Controllers\Cms\AuthController;
 use App\Http\Controllers\Cms\RoleController;
 use App\Http\Controllers\Cms\UserController;
 use App\Http\Controllers\Cms\ProfileController;
+use App\Http\Controllers\Cms\CategoryController;
 
 Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
     Route::middleware('auth:sanctum')->get('/check', [AuthController::class, 'check'])->name('auth.check');
+});
+
+Route::middleware('auth:sanctum')->prefix('/categorymanagement')->group(function () {
+    Route::post('/', [CategoryController::class, 'addCategory'])->name('categorymanagement.add');
 });
 
 Route::middleware('auth:sanctum')->prefix('/usermanagement')->group(function () {
