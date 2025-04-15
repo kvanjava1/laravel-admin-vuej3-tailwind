@@ -59,6 +59,7 @@ import type { ProfileDetailType, ParamsProfileType } from '@/cms/types/profile'
 const { loading, getProfileDetail, updateProfile } = useProfile()
 const message = ref<MessageTypes>({} as MessageTypes)
 const paramsProfile = ref<ParamsProfileType>({} as ParamsProfileType) 
+
 const getCurrentUserDetail = async (): Promise<void> => {
     const responseGetProfileDetail = await getProfileDetail()
     if(responseGetProfileDetail.code == 'success'){
@@ -69,9 +70,11 @@ const getCurrentUserDetail = async (): Promise<void> => {
         message.value = responseGetProfileDetail
     }
 }
+
 const clickToUpdateProfile = async (): Promise<void> => {
     message.value = await updateProfile(paramsProfile.value)
 }
+
 onMounted(async () => {
     await getCurrentUserDetail()
 })

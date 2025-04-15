@@ -214,15 +214,18 @@ const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
 const { addCategory, loading } = useCategory()
+
 const clickToShowAddCategory = (params: { show: boolean, parent?: object }): void => {
   if (params.show) {
     paramsCategory.value = {} as ParamsCategoryType
   }
   showAddCategory.value = params.show
 }
+
 const clickToAddCategory = async (params: { type: typeof paramsCategory.value.categoryType }): Promise<void> => {
   paramsCategory.value.categoryType = params.type
   messageAddCategory.value = await addCategory(paramsCategory.value)
 }
+
 const clearSearch = (): void => {}
 </script>
