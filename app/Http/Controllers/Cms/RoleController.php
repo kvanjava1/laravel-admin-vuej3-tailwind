@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\ValidationException;
-// use Spatie\Permission\Models\Role;
 use App\Models\Cms\Mysql\Role;
 use App\Http\Libraries\Message;
 use App\Http\Services\Cms\LogService;
-use \Exception;
+use Exception;
+use DB;
 
 class RoleController extends Controller
 {
@@ -109,7 +109,6 @@ class RoleController extends Controller
                 ->toArray();
 
             return response()->json($response, 500);
-
         }
     }
 
@@ -175,6 +174,8 @@ class RoleController extends Controller
                 ],
             ]);
 
+            DB::beginTransaction();
+
             $role = Role::create([
                 'name' => $validated['roleName'],
                 'guard_name' => 'api',
@@ -183,6 +184,8 @@ class RoleController extends Controller
             if (!empty($validated['selectedPermission'])) {
                 $role->syncPermissions($validated['selectedPermission']);
             }
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -207,6 +210,8 @@ class RoleController extends Controller
 
             return response()->json($response, 400);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -217,7 +222,7 @@ class RoleController extends Controller
                 ->setMessageDetail([$e->getMessage()])
                 ->toArray();
 
-            return response()->json($response, 200);
+            return response()->json($response, 500);
         }
     }
 
@@ -264,6 +269,8 @@ class RoleController extends Controller
 
             $beforeUpdate = $role->toArray();
 
+            DB::beginTransaction();
+
             $role->name = $req->get('roleName');
 
             if (!empty($req->get('selectedPermission'))) {
@@ -271,6 +278,8 @@ class RoleController extends Controller
             }
 
             $role->save();
+
+            DB::commit();
 
             $afterUpdate = $role->toArray();
 
@@ -285,7 +294,7 @@ class RoleController extends Controller
             $response = $this->message
                 ->setCode('success')
                 ->setMessageHead('Success update role')
-                ->setData($afterUpdate) // Optionally return the updated role
+                ->setData($afterUpdate)
                 ->toArray();
 
             return response()->json($response, 200);
@@ -303,6 +312,8 @@ class RoleController extends Controller
 
             return response()->json($response, 400);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -314,7 +325,7 @@ class RoleController extends Controller
                 ->setMessageDetail([$e->getMessage()])
                 ->toArray();
 
-            return response()->json($response, 500); // Changed to 500 for system error
+            return response()->json($response, 500);
         }
     }
 
@@ -346,7 +357,11 @@ class RoleController extends Controller
 
             $roleWillBeDeleted = $role->toArray();
 
+            DB::beginTransaction();
+
             $role->delete();
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -362,6 +377,8 @@ class RoleController extends Controller
 
             return response()->json($response, 200);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -372,7 +389,7 @@ class RoleController extends Controller
                 ->setMessageDetail([$e->getMessage()])
                 ->toArray();
 
-            return response()->json($response, 200);
+            return response()->json($response, 500);
         }
     }
 }

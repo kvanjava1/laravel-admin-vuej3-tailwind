@@ -9,6 +9,7 @@ use App\Http\Services\Cms\LogService;
 use App\Models\Cms\Mysql\User;
 use App\Models\Cms\Mysql\Role;
 use Exception;
+use DB;
 
 class UserController extends Controller
 {
@@ -67,6 +68,8 @@ class UserController extends Controller
 
             $userBeforeUpdate = $user->toArray();
 
+            DB::beginTransaction();
+
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
             $user->is_active = $validatedData['activeStatus'];
@@ -78,6 +81,8 @@ class UserController extends Controller
             $role = Role::findOrFail($validatedData['roleId']);
             $user->syncRoles($role);
             $user->save();
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -107,6 +112,8 @@ class UserController extends Controller
 
             return response()->json($response, 400);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -120,7 +127,7 @@ class UserController extends Controller
 
             return response()->json(
                 $response,
-                $e->getCode() ? $e->getMessage() : 500
+                $e->getCode() ? $e->getCode() : 500
             );
         }
     }
@@ -282,6 +289,8 @@ class UserController extends Controller
                 ],
             ]);
 
+            DB::beginTransaction();
+
             $newUser = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
@@ -291,6 +300,8 @@ class UserController extends Controller
 
             $role = Role::findOrFail($validatedData['roleId']);
             $newUser->assignRole($role);
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -315,9 +326,9 @@ class UserController extends Controller
                 ->toArray();
 
             return response()->json($response, 400);
-
-
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -341,13 +352,17 @@ class UserController extends Controller
         try {
             $user = User::find($req->route('id'));
 
-            if (!$user) 
-            {
+            if (!$user) {
                 throw new Exception('user not found', 400);
             }
 
             $deletedUser = $user->toArray();
+
+            DB::beginTransaction();
+
             $user->delete();
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -358,11 +373,13 @@ class UserController extends Controller
 
             $response = $this->message
                 ->setCode('success')
-                ->setMessageHead("delete User successfully for $deletedUser[name]" )
+                ->setMessageHead("delete User successfully for $deletedUser[name]")
                 ->toArray();
 
             return response()->json($response, 200);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)

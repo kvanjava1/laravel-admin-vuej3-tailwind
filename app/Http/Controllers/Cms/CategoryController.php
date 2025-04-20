@@ -29,15 +29,21 @@ class CategoryController extends Controller
             $validatedData = $req->validate([
                 'categoryType' => [
                     'required',
+                    'in:parent_category,child_category',
                 ],
                 'name' => [
                     'required',
+                    'string',
+                    'max:255',
                 ],
                 'parentId' => [
-
+                    'nullable',
+                    'integer',
+                    'exists:categories,id',
                 ],
                 'isActive' => [
                     'required',
+                    'boolean', // Ensures it is only true or false
                 ]
             ]);
 

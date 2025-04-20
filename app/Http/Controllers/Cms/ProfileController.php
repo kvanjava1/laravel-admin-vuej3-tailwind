@@ -6,9 +6,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
 use App\Http\Libraries\Message;
-
 use App\Http\Services\Cms\LogService;
 
 class ProfileController extends Controller
@@ -29,7 +29,7 @@ class ProfileController extends Controller
                 ->setRequest($req)
                 ->debug('updateUserDetail attempt started');
 
-            if(!$req->user()) 
+            if (!$req->user()) 
             {
                 throw new Exception('No User Detail was found', 400);
             }
@@ -52,6 +52,9 @@ class ProfileController extends Controller
             ]);
 
             $userBeforeUpdate = $req->user()->toArray();
+
+            DB::beginTransaction();
+
             $req->user()->name = $validatedData['name'];
 
             if (!empty($validatedData['password'])) {
@@ -63,6 +66,8 @@ class ProfileController extends Controller
             }
 
             $req->user()->save();
+
+            DB::commit();
 
             $this->logService
                 ->setRequest($req)
@@ -92,6 +97,8 @@ class ProfileController extends Controller
 
             return response()->json($response, 400);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
@@ -119,7 +126,7 @@ class ProfileController extends Controller
                 ->setData($req->user() ? $req->user()->toArray() : [])
                 ->toArray();
 
-                return response()->json($response, 200);
+            return response()->json($response, 200);
         } catch (Exception $e) {
             $this->logService
                 ->setRequest($req)
