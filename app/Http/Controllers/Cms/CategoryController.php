@@ -5,8 +5,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use App\Http\Libraries\Message;
+use App\Models\Cms\Mysql\Category;
 use App\Http\Services\Cms\LogService;
 use Exception;
+use DB;
 
 class CategoryController extends Controller
 {
@@ -24,13 +26,9 @@ class CategoryController extends Controller
         try {
             $this->logService
                 ->setRequest($req)
-                ->debug('addUser attempt started');
+                ->debug('addCategory attempt started');
 
             $validatedData = $req->validate([
-                'categoryType' => [
-                    'required',
-                    'in:parent_category,child_category',
-                ],
                 'name' => [
                     'required',
                     'string',
@@ -43,17 +41,27 @@ class CategoryController extends Controller
                 ],
                 'isActive' => [
                     'required',
-                    'boolean', // Ensures it is only true or false
+                    'boolean',
                 ]
             ]);
 
+            DB::beginTransaction();
+
+            $category = Category::create([
+                'name' => $validatedData['name'],
+                'parent_id' => $validatedData['parentId'] ?? null,
+                'is_active' => $validatedData['isActive'],
+            ]);
+
+            DB::commit();
+
             $this->logService
                 ->setRequest($req)
-                ->info('addUser success');
+                ->info('addCategory success');
 
             $response = $this->message
                 ->setCode('success')
-                ->setMessageHead('addUser successfully')
+                ->setMessageHead('Category added successfully for ' .  $category->name)
                 ->toArray();
 
             return response()->json($response, 200);
@@ -61,20 +69,22 @@ class CategoryController extends Controller
             $this->logService
                 ->setRequest($req)
                 ->setValidationException($e)
-                ->warning('addUser failed due to validation');
+                ->warning('addCategory failed due to validation');
 
             $response = $this->message
                 ->setCode('error_validation')
-                ->setMessageHead('Hmmmm something wrong')
+                ->setMessageHead('Hmmm something wrong')
                 ->setMessageDetail($e->errors())
                 ->toArray();
 
             return response()->json($response, 400);
         } catch (Exception $e) {
+            DB::rollBack();
+
             $this->logService
                 ->setRequest($req)
                 ->setException($e)
-                ->error('addUser process failed');
+                ->error('addCategory process failed');
 
             $response = $this->message
                 ->setCode('error_system')

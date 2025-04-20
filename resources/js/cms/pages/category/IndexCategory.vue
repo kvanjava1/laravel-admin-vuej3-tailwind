@@ -168,7 +168,7 @@
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button @click="clickToAddCategory({type: 'parent_category'})" :disabled="loading.addCategory">
+              <Button @click="clickToAddCategory()" :disabled="loading.addCategory">
                 <PlusIcon class="w-5 h-5" />
                 <label>Add</label>
               </Button>
@@ -222,8 +222,10 @@ const clickToShowAddCategory = (params: { show: boolean, parent?: object }): voi
   showAddCategory.value = params.show
 }
 
-const clickToAddCategory = async (params: { type: typeof paramsCategory.value.categoryType }): Promise<void> => {
-  paramsCategory.value.categoryType = params.type
+const clickToAddCategory = async (params?: { parentId: number }): Promise<void> => {
+  if(params?.parentId){
+    paramsCategory.value.parentId = params?.parentId
+  }
   messageAddCategory.value = await addCategory(paramsCategory.value)
 }
 
