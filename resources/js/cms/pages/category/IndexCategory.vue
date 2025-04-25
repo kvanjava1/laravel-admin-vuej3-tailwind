@@ -26,16 +26,19 @@
           </NTableRow>
         </NTableHead>
         <NTableBody>
-          <NTableRow>
+          <NTableRow v-for="val in  availableCategory?.data">
             <NTableData>
               <div class="flex items-center">
-                <div class="font-medium text-gray-900">Technology</div>
+                <div class="font-medium text-gray-900">{{ val.name }}</div>
               </div>
             </NTableData>
-            <NTableData>technology</NTableData>
+            <NTableData>-</NTableData>
             <NTableData>
-              <span class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+              <span v-if="val.is_active" class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 Active
+              </span>
+              <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                Not Active
               </span>
             </NTableData>
             <NTableData>
@@ -58,7 +61,7 @@
             </NTableData>
           </NTableRow>
           <!-- Child Category - Indented -->
-          <NTableRow>
+          <!-- <NTableRow>
             <NTableData class="px-6 py-4 whitespace-nowrap text-gray-900">
               <div class="flex items-center">
                 <div class="ml-6 text-gray-900">
@@ -121,7 +124,7 @@
                 </Button>
               </VMenu>
             </NTableData>
-          </NTableRow>
+          </NTableRow> -->
         </NTableBody>
       </NTable>
     </ContentBox>
@@ -182,7 +185,7 @@
 
 <script setup lang="ts">
 import type { MessageTypes } from '@/cms/types/message';
-import type { ParamsCategoryType } from '@/cms/types/category';
+import type { AvailableCategoryType, ParamsCategoryType, ParamsSearchCategoryType } from '@/cms/types/category.d';
 
 import Dashboard from '@/cms/layouts/Dashboard.vue';
 import ContentBox from '@/cms/components/ContentBox.vue';
@@ -202,7 +205,7 @@ import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
 import NTableData from '@/cms/components/table/normal/NTableData.vue'
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 import { useCategory } from '@/cms/composables/useCategory';
@@ -213,7 +216,10 @@ const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
-const { addCategory, loading } = useCategory()
+const paramsSearchCategory = ref<ParamsSearchCategoryType>({} as ParamsSearchCategoryType)
+const availableCategory = ref<AvailableCategoryType>({} as AvailableCategoryType)
+
+const { addCategory, getAllCategory, loading } = useCategory()
 
 const clickToShowAddCategory = (params: { show: boolean, parent?: object }): void => {
   if (params.show) {
@@ -229,5 +235,21 @@ const clickToAddCategory = async (params?: { parentId: number }): Promise<void> 
   messageAddCategory.value = await addCategory(paramsCategory.value)
 }
 
-const clearSearch = (): void => {}
+const clearSearch = (): void => {
+}
+
+const searchAllCategory = async (page: number = 1): Promise<void> => {
+  paramsSearchCategory.value.page = page
+  const response = await getAllCategory(paramsSearchCategory.value)
+  if (response.code == 'success'){
+    availableCategory.value = response.data
+  }else{
+    message.value = response
+  }
+}
+
+onBeforeMount(async () => {
+  await searchAllCategory()
+})
+
 </script>

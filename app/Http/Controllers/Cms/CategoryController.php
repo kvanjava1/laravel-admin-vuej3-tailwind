@@ -98,4 +98,50 @@ class CategoryController extends Controller
             );
         }
     }
+
+    public function getAllCategory(Request $req)
+    {
+        try {
+            $categories = Category::paginate(10);
+
+            $response = $this->message
+                ->setCode('success')
+                ->setMessageHead('Get all Category successfully')
+                ->setData($categories->toArray())
+                ->toArray();
+
+            return response()->json($response, 200);
+        } catch (ValidationException $e) {
+            $this->logService
+                ->setRequest($req)
+                ->setValidationException($e)
+                ->warning('getAllCategory failed due to validation');
+
+            $response = $this->message
+                ->setCode('error_validation')
+                ->setMessageHead('Hmmm something wrong')
+                ->setMessageDetail($e->errors())
+                ->toArray();
+
+            return response()->json($response, 400);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $this->logService
+                ->setRequest($req)
+                ->setException($e)
+                ->error('getAllCategory process failed');
+
+            $response = $this->message
+                ->setCode('error_system')
+                ->setMessageHead('Hmmm something wrong')
+                ->setMessageDetail([$e->getMessage()])
+                ->toArray();
+
+            return response()->json(
+                $response,
+                500
+            );
+        }
+    }
 }
