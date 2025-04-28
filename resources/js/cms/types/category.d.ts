@@ -13,7 +13,9 @@ export interface ParamsSearchCategoryType extends ParamsCategoryType {
 export interface CategoryType {
     id: number;
     name: string;
+    slug: string;
     parent_id: number | null;
+    recursive_children: CategoryType[];
     is_active: boolean;
     created_at: string;
     updated_at: string;

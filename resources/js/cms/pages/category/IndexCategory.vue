@@ -26,105 +26,79 @@
           </NTableRow>
         </NTableHead>
         <NTableBody>
-          <NTableRow v-for="val in  availableCategory?.data">
-            <NTableData>
-              <div class="flex items-center">
-                <div class="font-medium text-gray-900">{{ val.name }}</div>
-              </div>
-            </NTableData>
-            <NTableData>-</NTableData>
-            <NTableData>
-              <span v-if="val.is_active" class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                Active
-              </span>
-              <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                Not Active
-              </span>
-            </NTableData>
-            <NTableData>
-              <VMenu>
-                <Button>
-                  <PlusIcon class="w-5 h-5" />
-                  <label>Add</label>
-                </Button>
-                <router-link to="">
-                  <Button color="blue">
-                    <PencilIcon class="w-5 h-5" />
-                    <label>Edit</label>
-                  </Button>
-                </router-link>
-                <Button color="red">
-                  <TrashIcon class="w-5 h-5" />
-                  <label>Delete</label>
-                </Button>
-              </VMenu>
-            </NTableData>
-          </NTableRow>
-          <!-- Child Category - Indented -->
-          <!-- <NTableRow>
-            <NTableData class="px-6 py-4 whitespace-nowrap text-gray-900">
-              <div class="flex items-center">
-                <div class="ml-6 text-gray-900">
-                  Web Development
+          <template v-for="val0 in availableCategory" :key="val0.id">
+            <NTableRow>
+              <NTableData>
+                <div class="flex items-center">
+                  <div class="font-medium text-gray-900">{{ val0.name }}</div>
                 </div>
-              </div>
-            </NTableData>
-            <NTableData>web-development</NTableData>
-            <NTableData>
-              <span
-                class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-            </NTableData>
-            <NTableData>
-              <VMenu>
-                <Button>
-                  <PlusIcon class="w-5 h-5" />
-                  <label>Add</label>
-                </Button>
-                <router-link to="">
-                  <Button color="blue">
-                    <PencilIcon class="w-5 h-5" />
-                    <label>Edit</label>
+              </NTableData>
+              <NTableData>{{ val0.slug }}</NTableData>
+              <NTableData>
+                <span v-if="val0.is_active"
+                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
+                <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                  Not Active
+                </span>
+              </NTableData>
+              <NTableData>
+                <VMenu>
+                  <Button @click="clickToShowAddCategory({ show: true, parent: val0 })">
+                    <PlusIcon class="w-5 h-5" />
+                    <label>Add</label>
                   </Button>
-                </router-link>
-                <Button color="red">
-                  <TrashIcon class="w-5 h-5" />
-                  <label>Delete</label>
-                </Button>
-              </VMenu>
-            </NTableData>
-          </NTableRow>
-          <NTableRow>
-            <NTableData class="px-6 py-4 whitespace-nowrap text-gray-900">
-              <div class="flex items-center">
-                <div class="ml-6 text-gray-900">
-                  Web Development
+                  <router-link to="">
+                    <Button color="blue">
+                      <PencilIcon class="w-5 h-5" />
+                      <label>Edit</label>
+                    </Button>
+                  </router-link>
+                  <Button color="red">
+                    <TrashIcon class="w-5 h-5" />
+                    <label>Delete</label>
+                  </Button>
+                </VMenu>
+              </NTableData>
+            </NTableRow>
+            <!-- Child Category - Indented -->
+            <NTableRow v-for="val1 in val0.recursive_children">
+              <NTableData>
+                <div class="flex items-center">
+                  <div class="ml-6 font-medium text-gray-900">{{ val1.name }}</div>
                 </div>
-              </div>
-            </NTableData>
-            <NTableData>web-development</NTableData>
-            <NTableData>
-              <span
-                class="px-2 inline-flex leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-            </NTableData>
-            <NTableData>
-              <VMenu>
-                <Button>
-                  <PlusIcon class="w-5 h-5" />
-                  <label>Add</label>
-                </Button>
-                <router-link to="">
-                  <Button color="blue">
-                    <PencilIcon class="w-5 h-5" />
-                    <label>Edit</label>
+              </NTableData>
+              <NTableData>{{ val1.slug }}</NTableData>
+              <NTableData>
+                <span v-if="val1.is_active"
+                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  Active
+                </span>
+                <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                  Not Active
+                </span>
+              </NTableData>
+              <NTableData>
+                <VMenu>
+                  <Button @click="clickToShowAddCategory({ show: true, parent: val1 })">
+                    <PlusIcon class="w-5 h-5" />
+                    <label>Add</label>
                   </Button>
-                </router-link>
-                <Button color="red">
-                  <TrashIcon class="w-5 h-5" />
-                  <label>Delete</label>
-                </Button>
-              </VMenu>
-            </NTableData>
-          </NTableRow> -->
+                  <router-link to="">
+                    <Button color="blue">
+                      <PencilIcon class="w-5 h-5" />
+                      <label>Edit</label>
+                    </Button>
+                  </router-link>
+                  <Button color="red">
+                    <TrashIcon class="w-5 h-5" />
+                    <label>Delete</label>
+                  </Button>
+                </VMenu>
+              </NTableData>
+            </NTableRow>
+          </template>
         </NTableBody>
       </NTable>
     </ContentBox>
@@ -153,7 +127,7 @@
     <Modal v-show="showAddCategory">
       <ContentBox title="Add Category">
         <template #top>
-          <AlertBox :message="messageAddCategory"/>
+          <AlertBox :message="messageAddCategory" />
         </template>
         <VForm>
           <VFormItem>
@@ -185,7 +159,7 @@
 
 <script setup lang="ts">
 import type { MessageTypes } from '@/cms/types/message';
-import type { AvailableCategoryType, ParamsCategoryType, ParamsSearchCategoryType } from '@/cms/types/category.d';
+import type { CategoryType, ParamsCategoryType, ParamsSearchCategoryType } from '@/cms/types/category.d';
 
 import Dashboard from '@/cms/layouts/Dashboard.vue';
 import ContentBox from '@/cms/components/ContentBox.vue';
@@ -217,22 +191,27 @@ const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
 const paramsSearchCategory = ref<ParamsSearchCategoryType>({} as ParamsSearchCategoryType)
-const availableCategory = ref<AvailableCategoryType>({} as AvailableCategoryType)
+const availableCategory = ref<CategoryType[]>([] as CategoryType[])
 
 const { addCategory, getAllCategory, loading } = useCategory()
 
-const clickToShowAddCategory = (params: { show: boolean, parent?: object }): void => {
+const clickToShowAddCategory = (params: { show: boolean, parent?: CategoryType }): void => {
   if (params.show) {
     paramsCategory.value = {} as ParamsCategoryType
   }
+  if (params.parent) {
+    paramsCategory.value.parentId = params.parent.id
+  }
+  messageAddCategory.value = {} as MessageTypes
   showAddCategory.value = params.show
 }
 
-const clickToAddCategory = async (params?: { parentId: number }): Promise<void> => {
-  if(params?.parentId){
-    paramsCategory.value.parentId = params?.parentId
-  }
+const clickToAddCategory = async (): Promise<void> => {
   messageAddCategory.value = await addCategory(paramsCategory.value)
+  if (messageAddCategory.value.code == 'success') {
+    messageAddCategory.value = messageAddCategory.value
+    await searchAllCategory()
+  }
 }
 
 const clearSearch = (): void => {
@@ -241,9 +220,9 @@ const clearSearch = (): void => {
 const searchAllCategory = async (page: number = 1): Promise<void> => {
   paramsSearchCategory.value.page = page
   const response = await getAllCategory(paramsSearchCategory.value)
-  if (response.code == 'success'){
+  if (response.code == 'success') {
     availableCategory.value = response.data
-  }else{
+  } else {
     message.value = response
   }
 }

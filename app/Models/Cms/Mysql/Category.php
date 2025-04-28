@@ -22,6 +22,7 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'parent_id',
         'is_active',
     ];
@@ -49,5 +50,10 @@ class Category extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+    public function recursiveChildren()
+    {
+        return $this->children()->with('recursiveChildren');
     }
 }

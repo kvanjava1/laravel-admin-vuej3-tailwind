@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Cms;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+use Exception;
+use DB;
+
 use App\Http\Libraries\Message;
 use App\Models\Cms\Mysql\Category;
 use App\Http\Services\Cms\LogService;
-use Exception;
-use DB;
 
 class CategoryController extends Controller
 {
@@ -49,6 +51,7 @@ class CategoryController extends Controller
 
             $category = Category::create([
                 'name' => $validatedData['name'],
+                'slug' => Str::slug($validatedData['name']),
                 'parent_id' => $validatedData['parentId'] ?? null,
                 'is_active' => $validatedData['isActive'],
             ]);
@@ -61,7 +64,7 @@ class CategoryController extends Controller
 
             $response = $this->message
                 ->setCode('success')
-                ->setMessageHead('Category added successfully for ' .  $category->name)
+                ->setMessageHead('Category added successfully for ' . $category->name)
                 ->toArray();
 
             return response()->json($response, 200);
@@ -102,7 +105,9 @@ class CategoryController extends Controller
     public function getAllCategory(Request $req)
     {
         try {
-            $categories = Category::paginate(10);
+            $categories = Category::with('recursiveChildren')
+                ->whereNull('parent_id')
+                ->get();
 
             $response = $this->message
                 ->setCode('success')
