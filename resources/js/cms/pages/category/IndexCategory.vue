@@ -26,78 +26,10 @@
           </NTableRow>
         </NTableHead>
         <NTableBody>
-          <template v-for="val0 in availableCategory" :key="val0.id">
-            <NTableRow>
-              <NTableData>
-                <div class="flex items-center">
-                  <div class="font-medium text-gray-900">{{ val0.name }}</div>
-                </div>
-              </NTableData>
-              <NTableData>{{ val0.slug }}</NTableData>
-              <NTableData>
-                <span v-if="val0.is_active"
-                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  Active
-                </span>
-                <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                  Not Active
-                </span>
-              </NTableData>
-              <NTableData>
-                <VMenu>
-                  <Button @click="clickToShowAddCategory({ show: true, parent: val0 })">
-                    <PlusIcon class="w-5 h-5" />
-                    <label>Add</label>
-                  </Button>
-                  <router-link to="">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
-                  </Button>
-                </VMenu>
-              </NTableData>
-            </NTableRow>
-            <!-- Child Category - Indented -->
-            <NTableRow v-for="val1 in val0.recursive_children">
-              <NTableData>
-                <div class="flex items-center">
-                  <div class="ml-6 font-medium text-gray-900">{{ val1.name }}</div>
-                </div>
-              </NTableData>
-              <NTableData>{{ val1.slug }}</NTableData>
-              <NTableData>
-                <span v-if="val1.is_active"
-                  class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  Active
-                </span>
-                <span v-else class="px-2 inline-flex  leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                  Not Active
-                </span>
-              </NTableData>
-              <NTableData>
-                <VMenu>
-                  <Button @click="clickToShowAddCategory({ show: true, parent: val1 })">
-                    <PlusIcon class="w-5 h-5" />
-                    <label>Add</label>
-                  </Button>
-                  <router-link to="">
-                    <Button color="blue">
-                      <PencilIcon class="w-5 h-5" />
-                      <label>Edit</label>
-                    </Button>
-                  </router-link>
-                  <Button color="red">
-                    <TrashIcon class="w-5 h-5" />
-                    <label>Delete</label>
-                  </Button>
-                </VMenu>
-              </NTableData>
-            </NTableRow>
+          <template v-for="val in availableCategory" :key="val.id">
+            <NTableNestedRow :category-item="val" :shift-level="0" 
+              @show-add-category="clickToShowAddCategory"
+              @show-edit-category="clickToShowEditCategory" />
           </template>
         </NTableBody>
       </NTable>
@@ -154,6 +86,36 @@
         </VForm>
       </ContentBox>
     </Modal>
+    <Modal v-show="showEditCategory">
+      <ContentBox title="Edit Category">
+        <template #top>
+          <AlertBox :message="messageEditCategory" />
+        </template>
+        <VForm>
+          <VFormItem>
+            <VFormLabel label="Category Name" />
+            <VFormInput v-model="paramsCategory.name" type="text" name="category" placeholder="Enter category name" />
+          </VFormItem>
+          <VFormItem>
+            <VFormLabel label="Active Status" />
+            <VFormRadio v-model="paramsCategory.isActive" name="is_active" radio-value="1" label="Yes" />
+            <VFormRadio v-model="paramsCategory.isActive" name="is_active" radio-value="0" label="No" />
+          </VFormItem>
+          <VFormItem>
+            <VMenu>
+              <Button color="gray" @click="clickToShowEditCategory({ show: false })">
+                <XMarkIcon class="w-5 h-5" />
+                <label>Cancel</label>
+              </Button>
+              <Button :disabled="loading.addCategory">
+                <PlusIcon class="w-5 h-5" />
+                <label>Add</label>
+              </Button>
+            </VMenu>
+          </VFormItem>
+        </VForm>
+      </ContentBox>
+    </Modal>
   </Dashboard>
 </template>
 
@@ -176,19 +138,21 @@ import NTableHead from '@/cms/components/table/normal/NTableHead.vue'
 import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
 import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
 import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
-import NTableData from '@/cms/components/table/normal/NTableData.vue'
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
+import NTableNestedRow from '@/cms/components/table/normal/NTableNestedRow.vue';
 
 import { onBeforeMount, ref } from 'vue';
-import { PlusIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 import { useCategory } from '@/cms/composables/useCategory';
 
 const message = ref<MessageTypes>({} as MessageTypes)
 const messageAddCategory = ref<MessageTypes>({} as MessageTypes)
+const messageEditCategory = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
+const showEditCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
 const paramsSearchCategory = ref<ParamsSearchCategoryType>({} as ParamsSearchCategoryType)
 const availableCategory = ref<CategoryType[]>([] as CategoryType[])
@@ -204,6 +168,20 @@ const clickToShowAddCategory = (params: { show: boolean, parent?: CategoryType }
   }
   messageAddCategory.value = {} as MessageTypes
   showAddCategory.value = params.show
+}
+
+const clickToShowEditCategory = (params: { show: boolean, data?: CategoryType }): void => {
+  if (params.show) {
+    paramsCategory.value = {} as ParamsCategoryType
+  }
+  if (params.data) {
+    paramsCategory.value.parentId = params.data.id
+    paramsCategory.value.name = params.data.name
+    paramsCategory.value.parentId = params.data.parent_id as typeof paramsCategory.value.parentId
+    paramsCategory.value.isActive = params.data.is_active ? 1 : 0
+  }
+  messageEditCategory.value = {} as MessageTypes
+  showEditCategory.value = params.show
 }
 
 const clickToAddCategory = async (): Promise<void> => {
