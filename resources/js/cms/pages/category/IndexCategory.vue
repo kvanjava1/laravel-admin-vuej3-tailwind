@@ -107,9 +107,9 @@
                 <XMarkIcon class="w-5 h-5" />
                 <label>Cancel</label>
               </Button>
-              <Button :disabled="loading.addCategory">
-                <PlusIcon class="w-5 h-5" />
-                <label>Add</label>
+              <Button color="blue" @click="clickToEditCategory" :disabled="loading.addCategory">
+                <PencilIcon class="w-5 h-5" />
+                <label>Edit</label>
               </Button>
             </VMenu>
           </VFormItem>
@@ -142,7 +142,7 @@ import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 import NTableNestedRow from '@/cms/components/table/normal/NTableNestedRow.vue';
 
 import { onBeforeMount, ref } from 'vue';
-import { PlusIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, PencilIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 import { useCategory } from '@/cms/composables/useCategory';
 
@@ -187,7 +187,13 @@ const clickToShowEditCategory = (params: { show: boolean, data?: CategoryType })
 const clickToAddCategory = async (): Promise<void> => {
   messageAddCategory.value = await addCategory(paramsCategory.value)
   if (messageAddCategory.value.code == 'success') {
-    messageAddCategory.value = messageAddCategory.value
+    await searchAllCategory()
+  }
+}
+
+const clickToEditCategory = async (): Promise<void> => {
+  messageEditCategory.value = await addCategory(paramsCategory.value)
+  if (messageEditCategory.value.code == 'success') {
     await searchAllCategory()
   }
 }

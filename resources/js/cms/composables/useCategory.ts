@@ -12,9 +12,11 @@ export const useCategory = () => {
     const { authStoreData } = useAuthStore()
     const loading = ref<{
         addCategory: boolean,
+        updateCategory: boolean,
         getAllCategory: boolean
     }>({
         addCategory: false,
+        updateCategory: false,
         getAllCategory: false
     })
 
@@ -36,6 +38,27 @@ export const useCategory = () => {
             return errorCatchHelper(error)
         } finally {
             loading.value.addCategory = false
+        }
+    }
+
+    const updateCategory = async (categoryId: number, paramsCategory: ParamsCategoryType): Promise<MessageTypes> => {
+        try {
+            loading.value.updateCategory = true
+            const response: AxiosResponse<MessageTypes> = await axios.put(
+                route('categorymanagement.update', { id: categoryId }),
+                paramsCategory,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.updateCategory = false
+            return errorCatchHelper(error)
+        } finally {
+            loading.value.updateCategory = false
         }
     }
 
@@ -61,6 +84,7 @@ export const useCategory = () => {
 
     return {
         addCategory,
+        updateCategory,
         getAllCategory,
         loading
     }

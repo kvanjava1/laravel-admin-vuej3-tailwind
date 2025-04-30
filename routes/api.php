@@ -14,6 +14,7 @@ Route::prefix('/auth')->group(function () {
 Route::middleware('auth:sanctum')->prefix('/categorymanagement')->group(function () {
     Route::post('/', [CategoryController::class, 'addCategory'])->name('categorymanagement.add');
     Route::get('/', [CategoryController::class, 'getAllCategory'])->name('categorymanagement');
+    Route::put('/{id}/update', [CategoryController::class, 'updateCategory'])->name('categorymanagement.update');
 });
 
 Route::middleware('auth:sanctum')->prefix('/usermanagement')->group(function () {
