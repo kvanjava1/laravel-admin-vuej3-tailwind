@@ -13,11 +13,13 @@ export const useCategory = () => {
     const loading = ref<{
         addCategory: boolean,
         updateCategory: boolean,
-        getAllCategory: boolean
+        getAllCategory: boolean,
+        deleteCategory: boolean
     }>({
         addCategory: false,
         updateCategory: false,
-        getAllCategory: false
+        getAllCategory: false,
+        deleteCategory: false
     })
 
     const addCategory = async (paramsCategory: ParamsCategoryType): Promise<MessageTypes> => {
@@ -81,11 +83,31 @@ export const useCategory = () => {
             loading.value.getAllCategory = false
         }
     }
-
+    
+    const deleteCategory = async (categoryId: number): Promise<MessageTypes> => {
+        try {
+            loading.value.deleteCategory = true
+            const response: AxiosResponse<MessageTypes> = await axios.delete(
+                route('categorymanagement.delete', { id: categoryId }),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authStoreData?.token}`
+                    }
+                }
+            )
+            return response.data
+        } catch (error: any) {
+            loading.value.deleteCategory = false
+            return errorCatchHelper(error)
+        } finally {
+            loading.value.deleteCategory = false
+        }
+    }
     return {
         addCategory,
         updateCategory,
         getAllCategory,
+        deleteCategory,
         loading
     }
 }

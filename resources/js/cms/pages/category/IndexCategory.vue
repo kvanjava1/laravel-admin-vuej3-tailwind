@@ -28,8 +28,9 @@
         <NTableBody>
           <template v-for="val in availableCategory" :key="val.id">
             <NTableNestedRow :category-item="val" :shift-level="0" 
-              @show-add-category="clickToShowAddCategory"
-              @show-edit-category="clickToShowEditCategory" />
+              @clickToShowAddCategory="clickToShowAddCategory"
+              @clickToShowEditCategory="clickToShowEditCategory"
+              @clickToDeleteCategory="clickToDeleteCategory" />
           </template>
         </NTableBody>
       </NTable>
@@ -156,8 +157,9 @@ const showEditCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
 const paramsSearchCategory = ref<ParamsSearchCategoryType>({} as ParamsSearchCategoryType)
 const availableCategory = ref<CategoryType[]>([] as CategoryType[])
+const categoryIdIsBeingEdited = ref<number>(0);
 
-const { addCategory, getAllCategory, loading } = useCategory()
+const { addCategory, getAllCategory, loading, updateCategory, deleteCategory } = useCategory()
 
 const clickToShowAddCategory = (params: { show: boolean, parent?: CategoryType }): void => {
   if (params.show) {
@@ -175,10 +177,10 @@ const clickToShowEditCategory = (params: { show: boolean, data?: CategoryType })
     paramsCategory.value = {} as ParamsCategoryType
   }
   if (params.data) {
-    paramsCategory.value.parentId = params.data.id
     paramsCategory.value.name = params.data.name
     paramsCategory.value.parentId = params.data.parent_id as typeof paramsCategory.value.parentId
     paramsCategory.value.isActive = params.data.is_active ? 1 : 0
+    categoryIdIsBeingEdited.value = params.data.id
   }
   messageEditCategory.value = {} as MessageTypes
   showEditCategory.value = params.show
@@ -192,9 +194,19 @@ const clickToAddCategory = async (): Promise<void> => {
 }
 
 const clickToEditCategory = async (): Promise<void> => {
-  messageEditCategory.value = await addCategory(paramsCategory.value)
+  messageEditCategory.value = await updateCategory(categoryIdIsBeingEdited.value, paramsCategory.value)
   if (messageEditCategory.value.code == 'success') {
     await searchAllCategory()
+  }
+}
+
+const clickToDeleteCategory = async (params: { data?: CategoryType }): Promise<void> => {
+  const confirm = window.confirm(`Are you sure you want to delete ${params.data?.name} in the category?`)
+  if (confirm) {
+    message.value = await deleteCategory(params.data?.id as number)
+    if (message.value.code == 'success') {
+      await searchAllCategory()
+    }
   }
 }
 

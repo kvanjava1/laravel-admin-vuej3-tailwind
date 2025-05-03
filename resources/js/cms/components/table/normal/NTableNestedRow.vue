@@ -17,15 +17,15 @@
         </NTableData>
         <NTableData>
             <VMenu>
-                <Button @click="emit('show-add-category', { show: true, parent: categoryItem })" color="green">
+                <Button @click="emit('clickToShowAddCategory', { show: true, parent: categoryItem })" color="green">
                     <PlusIcon class="w-5 h-5" />
                     <label>Add</label>
                 </Button>
-                <Button @click="emit('show-edit-category', { show: true, data: categoryItem })" color="blue">
+                <Button @click="emit('clickToShowEditCategory', { show: true, data: categoryItem })" color="blue">
                     <PencilIcon class="w-5 h-5" />
                     <label>Edit</label>
                 </Button>
-                <Button color="red">
+                <Button @click="emit('clickToDeleteCategory', { data: categoryItem })" color="red">
                     <TrashIcon class="w-5 h-5" />
                     <label>Delete</label>
                 </Button>
@@ -34,8 +34,10 @@
     </NTableRow>
     <template v-for="val in categoryItem.recursive_children" :key="val.id">
         <NTableNestedRow :category-item="val" :shift-level="shiftLevel + 50"
-            @show-add-category="(params) => emit('show-add-category', params)"
-            @show-edit-category="(params) => emit('show-edit-category', params)" />
+            @clickToShowAddCategory="(params) => emit('clickToShowAddCategory', params)"
+            @clickToShowEditCategory="(params) => emit('clickToShowEditCategory', params)" 
+            @clickToDeleteCategory="(params) => emit('clickToDeleteCategory', params)"
+        />
     </template>
 </template>
 
@@ -49,7 +51,8 @@ import type { CategoryType } from '@/cms/types/category';
 
 defineProps<{ categoryItem: CategoryType, shiftLevel: number }>()
 const emit = defineEmits<{
-    (e: 'show-add-category', params: { show: boolean, parent?: CategoryType }): void,
-    (e: 'show-edit-category', params: { show: boolean, data?: CategoryType }): void
+    (e: 'clickToShowAddCategory', params: { show: boolean, parent?: CategoryType }): void,
+    (e: 'clickToShowEditCategory', params: { show: boolean, data?: CategoryType }): void,
+    (e: 'clickToDeleteCategory', params: { data?: CategoryType }): void
 }>()
 </script>
