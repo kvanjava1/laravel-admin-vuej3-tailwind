@@ -33,7 +33,7 @@
         </NTableData>
     </NTableRow>
     <template v-for="val in categoryItem.recursive_children" :key="val.id">
-        <NTableNestedRow :category-item="val" :shift-level="shiftLevel + 50"
+        <NestedCategoryRow :category-item="val" :shift-level="shiftLevel + 50"
             @clickToShowAddCategory="(params) => emit('clickToShowAddCategory', params)"
             @clickToShowEditCategory="(params) => emit('clickToShowEditCategory', params)" 
             @clickToDeleteCategory="(params) => emit('clickToDeleteCategory', params)"
@@ -49,7 +49,11 @@ import VMenu from '@/cms/components/VMenu.vue';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import type { CategoryType } from '@/cms/types/category';
 
-defineProps<{ categoryItem: CategoryType, shiftLevel: number }>()
+defineProps<{ 
+    categoryItem: CategoryType, 
+    shiftLevel: number
+ }>()
+ 
 const emit = defineEmits<{
     (e: 'clickToShowAddCategory', params: { show: boolean, parent?: CategoryType }): void,
     (e: 'clickToShowEditCategory', params: { show: boolean, data?: CategoryType }): void,

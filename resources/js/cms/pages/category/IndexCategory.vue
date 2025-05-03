@@ -27,7 +27,7 @@
         </NTableHead>
         <NTableBody>
           <template v-for="val in availableCategory" :key="val.id">
-            <NTableNestedRow :category-item="val" :shift-level="0" 
+            <NestedCategoryRow :category-item="val" :shift-level="0"
               @clickToShowAddCategory="clickToShowAddCategory"
               @clickToShowEditCategory="clickToShowEditCategory"
               @clickToDeleteCategory="clickToDeleteCategory" />
@@ -140,7 +140,7 @@ import NTableRow from '@/cms/components/table/normal/NTableRow.vue'
 import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
 import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
-import NTableNestedRow from '@/cms/components/table/normal/NTableNestedRow.vue';
+import NestedCategoryRow from '@/cms/components/table/normal/NestedCategoryRow.vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { PlusIcon, PencilIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
