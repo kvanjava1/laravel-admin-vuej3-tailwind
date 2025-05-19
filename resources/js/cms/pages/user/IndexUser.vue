@@ -145,15 +145,16 @@ import NTableData from '@/cms/components/table/normal/NTableData.vue'
 import { useUser } from '@/cms/composables/useUser'
 import { useRole } from '@/cms/composables/useRole'
 
-import type { AvailableUserType, ParamsSearchUserType } from '@/cms/types/user'
+import type { UserType, ParamsSearchUserType } from '@/cms/types/user'
 import type { MessageTypes } from '@/cms/types/message'
 import type { ParamRoleSearchType } from '@/cms/types/role'
+import type { PaginationType } from '@/cms/types/pagination'
 
 const { getUser, deleteUser } = useUser()
 const { getAllRole } = useRole()
 
 const paramsSearchUser = ref<ParamsSearchUserType>({} as ParamsSearchUserType)
-const availableUser = ref<AvailableUserType>({} as AvailableUserType)
+const availableUser = ref<PaginationType<UserType>>({} as PaginationType<UserType>)
 const message = ref<MessageTypes>({} as MessageTypes)
 const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)

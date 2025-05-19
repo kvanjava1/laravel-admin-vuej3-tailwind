@@ -270,7 +270,6 @@ class RoleController extends Controller
             $beforeUpdate = $role->toArray();
 
             DB::beginTransaction();
-
             $role->name = $req->get('roleName');
 
             if (!empty($req->get('selectedPermission'))) {
@@ -278,10 +277,9 @@ class RoleController extends Controller
             }
 
             $role->save();
-
             DB::commit();
 
-            $afterUpdate = $role->toArray();
+            $afterUpdate = $role->load('permissions')->toArray();
 
             $this->logService
                 ->setRequest($req)

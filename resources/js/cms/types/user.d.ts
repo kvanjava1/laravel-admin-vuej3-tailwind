@@ -35,25 +35,3 @@ export interface UserType {
     updated_at: string;
     roles: Role[];
 }
-
-export interface LinkType {
-    url: string | null;
-    label: string;
-    active: boolean;
-}
-
-export interface AvailableUserType {
-    current_page: number;
-    data: UserType[];
-    first_page_url: string | null;
-    from: number | null;
-    last_page: number;
-    last_page_url: string | null;
-    links: LinkType[];
-    next_page_url: string | null;
-    path: string;
-    per_page: number;
-    prev_page_url: string | null;
-    to: number | null;
-    total: number;
-}

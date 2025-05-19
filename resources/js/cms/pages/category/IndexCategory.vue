@@ -27,10 +27,9 @@
         </NTableHead>
         <NTableBody>
           <template v-for="val in availableCategory" :key="val.id">
-            <NestedCategoryRow :category-item="val" :shift-level="0"
-              @clickToShowAddCategory="clickToShowAddCategory"
-              @clickToShowEditCategory="clickToShowEditCategory"
-              @clickToDeleteCategory="clickToDeleteCategory" />
+            <NestedCategoryRow :category-item="val" :shift-level="0" @clickToShowAddCategory="clickToShowAddCategory"
+              @clickToShowEditCategory="clickToShowEditCategory" @clickToDeleteCategory="clickToDeleteCategory"
+              @clickToShowMoveCategory="clickToShowMoveCategory" />
           </template>
         </NTableBody>
       </NTable>
@@ -117,6 +116,37 @@
         </VForm>
       </ContentBox>
     </Modal>
+    <Modal v-show="showMoveCategory">
+      <ContentBox title="Move Category">
+        <VForm>
+          <VFormItem>
+            <VFormLabel label="Category" />
+            <VFormInput type="text" name="category" :value="categoryIsBeingMoved?.name" disabled />
+          </VFormItem>
+          <VFormItem>
+            <VFormLabel label="Select Target Category" />
+            <VFormSelect name="category" default-options-label="Select Category">
+              <option class="capitalize" v-for="category in getFlattenedCategories(availableCategory)" :key="category.id"
+                :value="category.id" :disabled="isDescendant(categoryIsBeingMoved, category)">
+                {{ category.levelName }}
+              </option>
+            </VFormSelect>
+          </VFormItem>
+          <VFormItem>
+            <VMenu>
+              <Button color="gray" @click="clickToShowMoveCategory({ show: false })">
+                <XMarkIcon class="w-5 h-5" />
+                <label>Cancel</label>
+              </Button>
+              <Button color="purple" @click="">
+                <PlusIcon class="w-5 h-5" />
+                <label>Move</label>
+              </Button>
+            </VMenu>
+          </VFormItem>
+        </VForm>
+      </ContentBox>
+    </Modal>
   </Dashboard>
 </template>
 
@@ -141,6 +171,7 @@ import NTableHeadItem from '@/cms/components/table/normal/NTableHeadItem.vue'
 import NTableBody from '@/cms/components/table/normal/NTableBody.vue'
 import VFormRadio from '@/cms/components/form/vertical/VFormRadio.vue';
 import NestedCategoryRow from '@/cms/components/table/normal/NestedCategoryRow.vue';
+import VFormSelect from '@/cms/components/form/vertical/VFormSelect.vue';
 
 import { onBeforeMount, ref } from 'vue';
 import { PlusIcon, PencilIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
@@ -154,10 +185,12 @@ const showSearchModal = ref<boolean>(false)
 const isSearching = ref<boolean>(false)
 const showAddCategory = ref<boolean>(false)
 const showEditCategory = ref<boolean>(false)
+const showMoveCategory = ref<boolean>(false)
 const paramsCategory = ref<ParamsCategoryType>({} as ParamsCategoryType)
 const paramsSearchCategory = ref<ParamsSearchCategoryType>({} as ParamsSearchCategoryType)
 const availableCategory = ref<CategoryType[]>([] as CategoryType[])
-const categoryIdIsBeingEdited = ref<number>(0);
+const categoryIdIsBeingEdited = ref<number>(0)
+const categoryIsBeingMoved = ref<CategoryType>({} as CategoryType)
 
 const { addCategory, getAllCategory, loading, updateCategory, deleteCategory } = useCategory()
 
@@ -193,6 +226,11 @@ const clickToAddCategory = async (): Promise<void> => {
   }
 }
 
+const clickToShowMoveCategory = async (params: { show: boolean, data?: CategoryType }): Promise<void> => {
+  showMoveCategory.value = params.show
+  categoryIsBeingMoved.value = params.data as CategoryType
+}
+
 const clickToEditCategory = async (): Promise<void> => {
   messageEditCategory.value = await updateCategory(categoryIdIsBeingEdited.value, paramsCategory.value)
   if (messageEditCategory.value.code == 'success') {
@@ -226,5 +264,33 @@ const searchAllCategory = async (page: number = 1): Promise<void> => {
 onBeforeMount(async () => {
   await searchAllCategory()
 })
+
+const getFlattenedCategories = (categories: CategoryType[]): (CategoryType & { levelName: string })[] => {
+  const flatten = (items: CategoryType[], level = 0): (CategoryType & { levelName: string })[] => {
+    return items.flatMap(item => [
+      {
+        ...item,
+        levelName: '— '.repeat(level) + item.name,
+      },
+      ...flatten(item.recursive_children || [], level + 1),
+    ])
+  }
+  return flatten(categories);
+}
+
+const isDescendant = (possibleParent: CategoryType, target: CategoryType): boolean => {
+  if (!possibleParent.recursive_children) return false;
+  return possibleParent.recursive_children.some(child =>
+    child.id === target.id || isDescendant(child, target)
+  )
+}
+
+const getAllowedTargetCategories = (flattened: CategoryType[], movingCategory: CategoryType | undefined): CategoryType[] => {
+  if (!movingCategory) return flattened;
+  return flattened.filter(category =>
+    category.id !== movingCategory.id &&
+    !isDescendant(movingCategory, category)
+  )
+}
 
 </script>

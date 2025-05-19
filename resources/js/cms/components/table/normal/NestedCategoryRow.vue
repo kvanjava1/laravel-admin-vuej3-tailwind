@@ -25,6 +25,10 @@
                     <PencilIcon class="w-5 h-5" />
                     <label>Edit</label>
                 </Button>
+                <Button @click="emit('clickToShowMoveCategory', { show: true, data: categoryItem })" color="purple">
+                    <PencilIcon class="w-5 h-5" />
+                    <label>Move</label>
+                </Button>
                 <Button @click="emit('clickToDeleteCategory', { data: categoryItem })" color="red">
                     <TrashIcon class="w-5 h-5" />
                     <label>Delete</label>
@@ -37,6 +41,7 @@
             @clickToShowAddCategory="(params) => emit('clickToShowAddCategory', params)"
             @clickToShowEditCategory="(params) => emit('clickToShowEditCategory', params)" 
             @clickToDeleteCategory="(params) => emit('clickToDeleteCategory', params)"
+            @clickToShowMoveCategory="(params) => emit('clickToShowMoveCategory', params)"
         />
     </template>
 </template>
@@ -57,6 +62,7 @@ defineProps<{
 const emit = defineEmits<{
     (e: 'clickToShowAddCategory', params: { show: boolean, parent?: CategoryType }): void,
     (e: 'clickToShowEditCategory', params: { show: boolean, data?: CategoryType }): void,
-    (e: 'clickToDeleteCategory', params: { data?: CategoryType }): void
+    (e: 'clickToDeleteCategory', params: { data?: CategoryType }): void,
+    (e: 'clickToShowMoveCategory', params: { show: boolean, data?: CategoryType }): void,
 }>()
 </script>

@@ -1,12 +1,13 @@
 import { ref } from 'vue'
 import { route } from 'ziggy-js';
 
-import type { ParamsSearchUserType, ParamsUserType } from '@/cms/types/user.d';
+import type { ParamsSearchUserType, ParamsUserType, UserType } from '@/cms/types/user.d';
 import type { MessageTypes } from '@/cms/types/message';
 import type { AxiosResponse } from 'axios';
 
 import { useAuthStore } from '@/cms/stores/useAuthStore';
 import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
+import type { PaginationType } from '../types/pagination';
 
 export const useUser = () => {
     const { authStoreData } = useAuthStore()
@@ -24,10 +25,10 @@ export const useUser = () => {
         updateUser: false
     })
 
-    const getUser = async (paramSearchUser: ParamsSearchUserType): Promise<MessageTypes> => {
+    const getUser = async (paramSearchUser: ParamsSearchUserType): Promise<MessageTypes<PaginationType<UserType>>> => {
         try {
             loading.value.getUser = true
-            const response: AxiosResponse<MessageTypes> = await axios.get(
+            const response: AxiosResponse<MessageTypes<PaginationType<UserType>>> = await axios.get(
                 route('usermanagement.user', { ...paramSearchUser }),
                 {
                     headers: {

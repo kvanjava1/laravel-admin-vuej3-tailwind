@@ -4,9 +4,10 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/cms/stores/useAuthStore';
 
 import type { MessageTypes } from '@/cms/types/message.d';
-import type { ParamRoleSearchType, ParamCreateRoleType } from '@/cms/types/role.d';
+import type { ParamRoleSearchType, ParamCreateRoleType, RoleType } from '@/cms/types/role.d';
 import type { AxiosResponse } from 'axios';
 import { errorCatchHelper } from '@/cms/helpers/errorCatchHelper';
+import type { PaginationType } from '../types/pagination';
 
 export const useRole = () => {
     const { authStoreData } = useAuthStore();
@@ -36,9 +37,9 @@ export const useRole = () => {
         }
     }
 
-    const getAllRole = async (query: ParamRoleSearchType): Promise<MessageTypes> => {
+    const getAllRole = async (query: ParamRoleSearchType): Promise<MessageTypes<PaginationType<RoleType>>> => {
         try {
-            const response: AxiosResponse<MessageTypes> = await axios.get(
+            const response: AxiosResponse<MessageTypes<PaginationType<RoleType>>> = await axios.get(
                 route('usermanagement.role', { ...query }),
                 {
                     headers: {

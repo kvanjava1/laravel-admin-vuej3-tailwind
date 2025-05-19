@@ -1,8 +1,8 @@
-export interface MessageTypes {
+export interface MessageTypes<Data = any> {
     code: string,
     message : {
         head: string,
         detail: array,
     },
-    data: array
+    data: Data
 }
