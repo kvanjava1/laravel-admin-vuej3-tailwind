@@ -52,6 +52,13 @@ return [
 
     'channels' => [
 
+        'database' => [
+            'driver' => 'custom',
+            'via' => App\Models\Cms\Mysql\DatabaseLogger::class,
+            'level' => env('LOG_LEVEL', 'debug'),
+            'table' => 'logs',
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
@@ -89,7 +96,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
